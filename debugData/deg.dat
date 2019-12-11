@@ -1,0 +1,471 @@
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  0  state  RobotState.onRoad  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  0  state  RobotState.onRoad  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  0  state  RobotState.onRoad  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+1 time = 20.248456731316587 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  0  state  RobotState.onRoad  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  0  state  RobotState.onRoad  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+2 time = 43.68065933568311 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  0  state  RobotState.onRoad  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+5 time = 75.8023746329889 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+3 time = 82.13403679352427 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  0  state  RobotState.onRoad  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+6 time = 82.13403679352427 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+0 time = 89.82204629154248 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+4 time = 89.82204629154248 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  1497.431408678964  state  RobotState.onTask  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  1497.431408678964  state  RobotState.onTask  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  0  state  RobotState.onRoad  taskID  4
+
+7 time = 89.82204629154248 type = CalType.arriveCond
+
+0  arriveTime  89.82204629154248  leaveTime  249.17076859212648  state  RobotState.onTask  taskID  4
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  89.82204629154248  leaveTime  249.17076859212648  state  RobotState.onTask  taskID  4
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  89.82204629154248  leaveTime  249.17076859212648  state  RobotState.onTask  taskID  4
+
+0 time = 249.17076859212648 type = CalType.leaveCond
+4 have been completed
+
+0  arriveTime  295.5604226110993  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  273.52235991589833  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  309.98195177416954  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  3
+
+4 time = 273.52235991589833 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  309.98195177416954  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  3
+
+0 time = 295.5604226110993 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  309.98195177416954  leaveTime  249.17076859212648  state  RobotState.onRoad  taskID  3
+
+7 time = 309.98195177416954 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  1566.8774368069319  state  RobotState.onTask  taskID  3
+6  arriveTime  82.13403679352427  leaveTime  547.1755299893522  state  RobotState.onTask  taskID  5
+7  arriveTime  309.98195177416954  leaveTime  1566.8774368069319  state  RobotState.onTask  taskID  3
+
+3 time = 547.1755299893522 type = CalType.leaveCond
+5 have been completed
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  547.1755299893522  state  RobotState.onRoad  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  1566.8774368069319  state  RobotState.onTask  taskID  3
+6  arriveTime  564.2635374799872  leaveTime  547.1755299893522  state  RobotState.onRoad  taskID  3
+7  arriveTime  309.98195177416954  leaveTime  1566.8774368069319  state  RobotState.onTask  taskID  3
+
+6 time = 564.2635374799872 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  547.1755299893522  state  RobotState.onRoad  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+6  arriveTime  564.2635374799872  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+7  arriveTime  309.98195177416954  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+
+3 time = 612.075452947704 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  75.8023746329889  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+6  arriveTime  564.2635374799872  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+7  arriveTime  309.98195177416954  leaveTime  767.0641077079242  state  RobotState.onTask  taskID  3
+
+5 time = 767.0641077079242 type = CalType.leaveCond
+3 have been completed
+
+0  arriveTime  295.5604226110993  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  853.5320691794498  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  816.1558585424585  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  1
+6  arriveTime  823.7033167419494  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  6
+
+5 time = 816.1558585424585 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  6702.922390110736  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  816.1558585424585  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+6  arriveTime  823.7033167419494  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  6
+
+6 time = 823.7033167419494 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1338.9315534730508  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  1338.9315534730508  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  816.1558585424585  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+6  arriveTime  823.7033167419494  leaveTime  1338.9315534730508  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  767.0641077079242  state  RobotState.onRoad  taskID  6
+
+7 time = 823.7033167419494 type = CalType.arriveCond
+
+0  arriveTime  295.5604226110993  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+1  arriveTime  20.248456731316587  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+2  arriveTime  43.68065933568311  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+3  arriveTime  612.075452947704  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  816.1558585424585  leaveTime  827.0418564109207  state  RobotState.onTask  taskID  1
+6  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+
+0 time = 827.0418564109207 type = CalType.leaveCond
+1 have been completed
+
+0  arriveTime  862.7349930060702  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  6
+1  arriveTime  20.248456731316587  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+2  arriveTime  850.1286491721511  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  0
+3  arriveTime  612.075452947704  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  0
+6  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+
+2 time = 850.1286491721511 type = CalType.arriveCond
+
+0  arriveTime  862.7349930060702  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  6
+1  arriveTime  20.248456731316587  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+2  arriveTime  850.1286491721511  leaveTime  1443.6048932574765  state  RobotState.onTask  taskID  0
+3  arriveTime  612.075452947704  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1443.6048932574765  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  0
+6  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+
+5 time = 850.1286491721511 type = CalType.arriveCond
+
+0  arriveTime  862.7349930060702  leaveTime  827.0418564109207  state  RobotState.onRoad  taskID  6
+1  arriveTime  20.248456731316587  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+2  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+3  arriveTime  612.075452947704  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+6  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  1093.1227886519882  state  RobotState.onTask  taskID  6
+
+0 time = 862.7349930060702 type = CalType.arriveCond
+
+0  arriveTime  862.7349930060702  leaveTime  1018.7094035444723  state  RobotState.onTask  taskID  6
+1  arriveTime  20.248456731316587  leaveTime  1018.7094035444723  state  RobotState.onTask  taskID  6
+2  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+3  arriveTime  612.075452947704  leaveTime  1018.7094035444723  state  RobotState.onTask  taskID  6
+4  arriveTime  273.52235991589833  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+6  arriveTime  823.7033167419494  leaveTime  1018.7094035444723  state  RobotState.onTask  taskID  6
+7  arriveTime  823.7033167419494  leaveTime  1018.7094035444723  state  RobotState.onTask  taskID  6
+
+0 time = 1018.7094035444723 type = CalType.leaveCond
+6 have been completed
+
+0  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1111.3745666170448  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+
+1 time = 1077.4035259077891 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1099.1825715420796  state  RobotState.onTask  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1099.1825715420796  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1099.1825715420796  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1099.1825715420796  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+
+3 time = 1077.4035259077891 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+
+0 time = 1093.0397472810648 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+
+6 time = 1093.0397472810648 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  5624.517607673169  state  RobotState.onTask  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  5624.517607673169  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1018.7094035444723  state  RobotState.onRoad  taskID  2
+
+7 time = 1093.0397472810648 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+1  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+2  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+3  arriveTime  1077.4035259077891  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+4  arriveTime  273.52235991589833  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+5  arriveTime  850.1286491721511  leaveTime  1093.4305664453636  state  RobotState.onTask  taskID  0
+6  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+
+1 time = 1093.4305664453636 type = CalType.leaveCond
+0 have been completed
+
+0  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+
+1 time = 1118.0273141978614 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  1.7976931348623157e+308  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+
+2 time = 1118.0273141978614 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  9701.574982558823  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  9701.574982558823  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+
+3 time = 1118.0273141978614 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  2366.141424738049  state  RobotState.onTask  taskID  2
+
+4 time = 1152.5067883963313 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  1858.4967151136912  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1858.4967151136912  state  RobotState.onTask  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1093.4305664453636  state  RobotState.onRoad  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  1858.4967151136912  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1858.4967151136912  state  RobotState.onTask  taskID  2
+
+5 time = 1152.5067883963313 type = CalType.arriveCond
+
+0  arriveTime  1093.0397472810648  leaveTime  1650.2841131405892  state  RobotState.onTask  taskID  2
+1  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+4  arriveTime  1152.5067883963313  leaveTime  1650.2841131405892  state  RobotState.onTask  taskID  2
+5  arriveTime  1152.5067883963313  leaveTime  1650.2841131405892  state  RobotState.onTask  taskID  2
+6  arriveTime  1093.0397472810648  leaveTime  1650.2841131405892  state  RobotState.onTask  taskID  2
+7  arriveTime  1093.0397472810648  leaveTime  1650.2841131405892  state  RobotState.onTask  taskID  2
+
+0 time = 1650.2841131405892 type = CalType.leaveCond
+2 have been completed
+
+0  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2732.545107221482  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+
+0 time = 1689.8441940302941 type = CalType.arriveCond
+
+0  arriveTime  1689.8441940302941  leaveTime  2265.3161996880644  state  RobotState.onTask  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  2265.3161996880644  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2265.3161996880644  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2265.3161996880644  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+
+4 time = 1689.8441940302941 type = CalType.arriveCond
+
+0  arriveTime  1689.8441940302941  leaveTime  2087.2435814583564  state  RobotState.onTask  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  2087.2435814583564  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  2087.2435814583564  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  2087.2435814583564  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  2087.2435814583564  state  RobotState.onTask  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+
+5 time = 1689.8441940302941 type = CalType.arriveCond
+
+0  arriveTime  1689.8441940302941  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1993.3328200264436  state  RobotState.onTask  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+
+6 time = 1689.8441940302941 type = CalType.arriveCond
+
+0  arriveTime  1689.8441940302941  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1935.3229294932316  state  RobotState.onTask  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1650.2841131405892  state  RobotState.onRoad  taskID  7
+
+7 time = 1689.8441940302941 type = CalType.arriveCond
+
+0  arriveTime  1689.8441940302941  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+1  arriveTime  1118.0273141978614  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+2  arriveTime  1118.0273141978614  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+3  arriveTime  1118.0273141978614  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+4  arriveTime  1689.8441940302941  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+5  arriveTime  1689.8441940302941  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+6  arriveTime  1689.8441940302941  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+7  arriveTime  1689.8441940302941  leaveTime  1895.9308049856343  state  RobotState.onTask  taskID  7
+
+0 time = 1895.9308049856343 type = CalType.leaveCond
+7 have been completed
+[True, True, True, True, True, True, True, True]
