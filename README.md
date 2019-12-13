@@ -1,1 +1,46 @@
 # MPDA_conf
+
+1. the event of arrive and departure immediately need to be found and eliminated. (Local search )
+2. The very excuting time need to be revised. (Local search )
+3. Some departure time can be advanced for a little while. (Local search)
+
+
+
+
+
+The mutation method will adopt the classical methods.
+
+The selection method also will adopt the classical methods
+
+
+
+
+
+
+
+12 Dec 
+
+- [x] Write a normal GA
+
+- [x] Fix the decoding bug about the stuck condition (the random search method best solution is 841.7637188557708)
+
+  ```python
+  [[6 1 0 7 5 4 2 3]
+   [6 4 7 0 5 3 2 1]
+   [3 0 4 2 6 7 5 1]
+   [3 5 6 0 2 7 1 4]
+   [4 5 1 0 6 7 3 2]
+   [6 3 4 0 7 5 1 2]
+   [1 0 3 6 7 4 5 2]
+   [1 4 7 0 2 3 6 5]]
+  ```
+
+- [x] Record the result of random search method
+
+13 Dec
+
+- [ ] The disturb method as a local search method.
+- [ ] implementation on the grid.
+
+
+

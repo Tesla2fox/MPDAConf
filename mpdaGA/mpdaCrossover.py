@@ -10,7 +10,7 @@ IND_ROBNUM = 0
 IND_TASKNUM = 0
 
 
-def mpda_mate(ind1,ind2):
+def mpda_PMX_mate(ind1,ind2):
     for i  in  range(0,len(ind1),IND_TASKNUM):
         cxInd1 = ind1[i:i+IND_TASKNUM]
         cxInd2 = ind2[i:i+IND_TASKNUM]
@@ -130,7 +130,11 @@ def cxOrdered(ind1, ind2):
 
     return ind1, ind2
 
+# def mpda_PMX():
+#     pass
+
 if __name__ == '__main__':
     ind1 = [0, 1, 2, 3, 4]
     ind2 = [4, 3, 2, 1, 0]
     print(tools.cxOrdered(ind1,ind2))
+

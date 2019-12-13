@@ -56,7 +56,7 @@ class Task():
         changeDur = time - self.changeRateTime
         incre = changeDur * self.cRate
         if incre > 709:
-            raise Exception('incre is too high for python')
+            # raise Exception('incre is too high for python')
             return False
         self.cState = self.cState * math.exp(changeDur * self.cRate)
         valid = True

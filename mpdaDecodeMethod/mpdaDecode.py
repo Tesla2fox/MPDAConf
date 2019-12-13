@@ -55,11 +55,12 @@ class MPDADecoder(object):
         self.encode = x
         self._actSeq = ActionSeq()
         self.initStates()
-        self.decodeProcessor()
+        # if self.decodeProcessor():
+        validStateBoolean = self.decodeProcessor()
         if degBoolean:
             self._degFile.write(str(self.cmpltLst))
         # print(self._actSeq.convert2MultiPerm(self._robNum))
-        return self._actSeq
+        return validStateBoolean, self._actSeq
     def initStates(self):
         '''
         initialize states of decode method
@@ -161,10 +162,14 @@ class MPDADecoder(object):
                     self._degFile.write(str(taskID) + ' have been completed\n')
 
             if cal_type == CalType.endCond:
-                invalidFitness = True
+                # invalidFitness = True
+                validStateBool = False
                 break
 
-
+        if not validStateBool:
+            pass
+            # print('the state is explosion')
+        return  validStateBool
     '''
     some fucntions
     '''
@@ -311,7 +316,51 @@ if __name__ == '__main__':
     np.random.seed(2)
     x = generateRandEncode(robNum= ins._robNum, taskNum= ins._taskNum)
     print(x)
-    actSeq = decoder.decode(x)
+    x = [[6, 1, 0, 7, 5 ,4, 2, 3],
+        [6, 4, 7 ,0 ,5 ,3 ,2 ,1],
+        [3, 0 ,4 ,2 ,6 ,7 ,5 ,1],
+        [3, 5 ,6 ,0 ,2 ,7 ,1 ,4],
+        [4, 5 ,1 ,0 ,6 ,7 ,3 ,2],
+        [6, 3 ,4 ,0 ,7 ,5 ,1 ,2],
+        [1 ,0 ,3 ,6 ,7 ,4 ,5, 2],
+        [1, 4, 7, 0, 2, 3, 6, 5]]
+    validStateBoolean,actSeq = decoder.decode(x)
     actSeqDecoder = MPDADecoderActionSeq(ins)
     actSeqDecoder.decode(actSeq)
+    # print(np.array(actSeq.convert2MultiPerm(ins._robNum),dtype = object))
+    for perm in actSeq.convert2MultiPerm(ins._robNum):
+        print(perm)
+    # actSeqDecoder.drawActionSeqGantt()
+    # actSeqDecoder.drawTaskScatter()
+    # actSeqDecoder.drawTaskDependence()
+
+    print('first decoder is over')
+    # np.random.seed(1)
+
+    chrom = [1, 0, 6, 3, 7, 5, 2, 4, 6, 3, 2, 5, 0, 7, 1, 4, 6, 3, 1, 2, 5, 7, 4, 0, 1, 0, 6, 5, 7, 3, 4, 2, 6, 3, 5, 7, 4,
+         1, 0, 2, 6, 3, 2, 5, 7, 4, 1, 0, 1, 6, 0, 5, 7, 2, 4, 3, 6, 3, 2, 7, 4, 1, 5, 0]
+
+
+    encode =  np.zeros((ins._robNum, ins._taskNum), dtype=int)
+    i = 0
+    for robID in range(ins._robNum):
+        for taskID in range(ins._taskNum):
+            encode[robID][taskID] = chrom[i]
+            i += 1
+    # mpda_decode_nb = MPDA_Decode_Discrete_NB()
+    print(encode)
+    validBoolean,actSeq = decoder.decode(encode)
+
+    # x = generateRandEncode(robNum= ins._robNum, taskNum= ins._taskNum)
+    # print(x)
+    # validStateBoolean,actSeq = decoder.decode(x)
+    # print(actSeq.convert2MultiPerm(ins._robNum))
+    for perm in actSeq.convert2MultiPerm(ins._robNum):
+        print(perm)
+    # print(actSeq)
+    actSeqDecoder = MPDADecoderActionSeq(ins)
+    actSeqDecoder.decode(actSeq)
+
     actSeqDecoder.drawActionSeqGantt()
+    actSeqDecoder.drawTaskScatter()
+    actSeqDecoder.drawTaskDependence()
