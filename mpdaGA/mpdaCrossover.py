@@ -24,7 +24,6 @@ def mpda_PMX_mate(ind1,ind2):
         ind2[i:i + IND_TASKNUM] = cxInd2
         # print(ind1)
         # print(ind2)
-
     return ind1,ind2
 
 def mpda_cxPartialyMatched(ind1, ind2):

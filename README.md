@@ -44,3 +44,13 @@ The selection method also will adopt the classical methods
 
 
 
+Some notes:
+You are exactly correct. In Python 3, map returns an iterator, which you can only iterate over once. If you iterate over an iterator a second time, it will raise StopIteration immediately, as though it were empty. max consumes the whole thing, and min sees the iterator as empty. If you need to use the elements more than once, you need to call list to get a list instead of an iterator.
+
+
+
+
+
+#### The local search method maybe need to revised , the clone method will cost too many time 
+
+

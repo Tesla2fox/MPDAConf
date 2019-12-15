@@ -3,12 +3,8 @@ import numpy as np
 import sys
 import time
 
-
-
-
-
-
 if __name__ == '__main__':
+
     ins = MPDAInstance()
     insFileName =  './/benchmark//8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins.dat'
     ins.loadCfg(fileName =  insFileName)
