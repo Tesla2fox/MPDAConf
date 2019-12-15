@@ -32,7 +32,7 @@ SuperiorCatalogue = os.path.dirname(AbsolutePath)
 # 相对路径的上级路径
 BaseDir = os.path.dirname(SuperiorCatalogue)
 
-degBoolean = True
+degBoolean = False
 
 class MPDADecoder(object):
     def __init__(self,ins :MPDAInstance):
