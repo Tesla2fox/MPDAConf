@@ -9,7 +9,7 @@ if __name__ == '__main__':
     if len(sys.argv)  == 4:
         benchmarkName = sys.argv[1]
         randomSeed = int(sys.argv[2])
-        localSearch = '_LDS'
+        localSearch = sys.argv[3]
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         randomSeed = 1

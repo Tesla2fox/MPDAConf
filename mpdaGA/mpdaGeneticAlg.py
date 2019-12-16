@@ -97,7 +97,7 @@ class MPDA_Genetic_Alg(object):
         # tools.selAutomaticEpsilonLexicase(), tournsize=3
         self.toolbox.register("select", tools.selTournament,tournsize = 3)
 
-        if localSearch == None:
+        if localSearch == 'None':
             self._localSearchBoolean = False
             # self.
         elif localSearch == '_LDS':
