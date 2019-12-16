@@ -1,5 +1,15 @@
-from mpdaGA.mpdaGeneticAlg import  MPDA_Genetic_Alg,MPDAInstance
+import os
 import sys
+AbsolutePath = os.path.abspath(__file__)
+SuperiorCatalogue = os.path.dirname(AbsolutePath)
+BaseDir = os.path.dirname(SuperiorCatalogue)
+if BaseDir in sys.path:
+#    print('have been added')
+    pass
+else:
+    sys.path.append(BaseDir)
+
+from mpdaGA.mpdaGeneticAlg import  MPDA_Genetic_Alg,MPDAInstance
 
 if __name__ == '__main__':
     print('begin to run \n')
@@ -13,7 +23,7 @@ if __name__ == '__main__':
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         randomSeed = 1
-        localSearch = None
+        localSearch = 'None'
     else:
         raise Exception('xxx')
 
@@ -21,7 +31,7 @@ if __name__ == '__main__':
     ins.loadCfg(fileName=insConfDir + benchmarkName + '.dat')
     print(benchmarkName)
 
-    mpda_ga = MPDA_Genetic_Alg(ins, localSearch = localSearch)
+    mpda_ga = MPDA_Genetic_Alg(ins, localSearch = localSearch, rdSeed = randomSeed)
     print(mpda_ga)
     mpda_ga.run()
     

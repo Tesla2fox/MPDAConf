@@ -33,7 +33,7 @@ class DecoderType(Enum):
 
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,localSearch = None,
-                 saveData = None):
+                 saveData = None, rdSeed = 1):
 
         self._ins = ins
         self._robNum = ins._robNum
@@ -59,6 +59,7 @@ class MPDA_Genetic_Alg(object):
         _local.IND_ROBNUM = self._robNum
         _local.IND_TASKNUM = self._taskNum
 
+        self.rdSeed = rdSeed
         _eval.ga_eval_mpda = MPDADecoder(ins)
         '''
         deap init
@@ -99,6 +100,7 @@ class MPDA_Genetic_Alg(object):
 
         if localSearch == 'None':
             self._localSearchBoolean = False
+            self._algName += localSearch
             # self.
         elif localSearch == '_LDS':
             self._localSearchBoolean = True
@@ -111,12 +113,13 @@ class MPDA_Genetic_Alg(object):
         pass
     def run(self):
 
-        randomSeed = 1
+        randomSeed = self.rdSeed
         random.seed(randomSeed)
 
-        f_con = open(BaseDir + '//debugData//'+ str(self._algName) + 'r_' + str(randomSeed) + '.dat','w')
+
+        f_con = open(BaseDir + '//debugData//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
         NP = 200
-        NGEN = 200
+        NGEN = 300
         CXPB, MUTPB = 0.5, 0.3
 
         pop = self.toolbox.population(n = NP)
