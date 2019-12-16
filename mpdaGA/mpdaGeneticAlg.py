@@ -102,9 +102,33 @@ class MPDA_Genetic_Alg(object):
             self._localSearchBoolean = False
             self._algName += localSearch
             # self.
-        elif localSearch == '_LDS':
+        elif localSearch == '_SWAP':
             self._localSearchBoolean = True
-            self.toolbox.register("localSearch",_local.mpda_insertion_LS)
+            self.toolbox.register("localSearch",_local.mpda_swap_LS)
+            self._algName += localSearch
+            self._LSP = 0.7
+            _local.TOOLBOX = self.toolbox
+        elif localSearch == '_TRI':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_triangle_LS)
+            self._algName += localSearch
+            self._LSP = 1
+            _local.TOOLBOX = self.toolbox
+        elif localSearch == '_INSERT':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_insert_LS)
+            self._algName += localSearch
+            self._LSP = 0.7
+            _local.TOOLBOX = self.toolbox
+        elif localSearch == '_VINSERT':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_v_insert_LS)
+            self._algName += localSearch
+            self._LSP = 0.7
+            _local.TOOLBOX = self.toolbox
+        elif localSearch == '_DIST':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_v_insert_LS)
             self._algName += localSearch
             self._LSP = 0.7
             _local.TOOLBOX = self.toolbox
@@ -132,6 +156,7 @@ class MPDA_Genetic_Alg(object):
         stats.register("max", numpy.max)
         logbook = tools.Logbook()
         logbook.header = "gen", "evals", "std", "min", "avg", "max"
+
 
         NFE = 0
         fitnesses = map(self.toolbox.evaluate, pop)

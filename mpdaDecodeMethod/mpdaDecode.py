@@ -112,6 +112,7 @@ class MPDADecoder(object):
                     rob = self.robotLst[actionID]
                     rob.leaveTime = rob.arriveTime
                     rob.stateType = RobotState['onTask']
+                    self._actSeq._arrCmpltTaskLst.append((actionID, taskID))
                 else:
 # =============================================================================
 # the task has not been cmplt
