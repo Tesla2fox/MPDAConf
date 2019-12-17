@@ -27,7 +27,6 @@ class MPDAInstance(object):
         readCfg.get('tsk_rat',self._taskRateLst)
         readCfg.get('tsk_state',self._taskStateLst)
         self._rob2taskDisMat = np.zeros((self._robNum,self._taskNum))
-
         disLst = []
         readCfg.get('rob2tskDis', disLst)
         for i in range(self._robNum):

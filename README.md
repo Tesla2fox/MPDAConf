@@ -40,12 +40,32 @@ The selection method also will adopt the classical methods
 13 Dec
 
 - [ ] The disturb method as a local search method.
-- [ ] implementation on the grid.
+- [x] implementation on the grid.
 
 
 
 Some notes:
 You are exactly correct. In Python 3, map returns an iterator, which you can only iterate over once. If you iterate over an iterator a second time, it will raise StopIteration immediately, as though it were empty. max consumes the whole thing, and min sees the iterator as empty. If you need to use the elements more than once, you need to call list to get a list instead of an iterator.
+
+
+
+
+The crossover methods need to be revised.
+Some problem needs to revised
+contributions are the decoding method and the better performance
+Comparison methods is the EDA.
+
+The convergence time is so quick, so I need some methods to 
+change the character of the convergence. (Maybe we can add some restart mechanism)
+
+TRDIAGNLE localsearch method may promote the fitnees of MPDA GA search process.
+
+
+
+
+1. The very small excuting time need to be found and revised.
+
+
 
 
 

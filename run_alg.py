@@ -29,14 +29,12 @@ if __name__ == '__main__':
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         randomSeed = 1
         localSearch = '_TRI'
-        localSearch = '_VINSERT'
+        localSearch = '_None'
     else :
         pass
-
     # else:
     #
     #     raise Exception('xxx')
-
     localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST']
     if localSearch not in localSearchLst:
         print(localSearch)
@@ -44,6 +42,6 @@ if __name__ == '__main__':
     print(sys.argv)
     ins.loadCfg(fileName=insConfDir + benchmarkName + '.dat')
     print(benchmarkName)
-    mpda_ga = MPDA_Genetic_Alg(ins, localSearch = localSearch, rdSeed = randomSeed)
+    mpda_ga = MPDA_Genetic_Alg(ins, benchmarkName = benchmarkName ,localSearch = localSearch, rdSeed = randomSeed)
     print(mpda_ga)
     mpda_ga.run()

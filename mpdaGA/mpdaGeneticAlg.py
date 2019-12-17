@@ -32,7 +32,7 @@ class DecoderType(Enum):
 
 
 class MPDA_Genetic_Alg(object):
-    def __init__(self,ins : MPDAInstance,localSearch = None,
+    def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
                  saveData = None, rdSeed = 1):
 
         self._ins = ins
@@ -60,6 +60,7 @@ class MPDA_Genetic_Alg(object):
         _local.IND_TASKNUM = self._taskNum
 
         self.rdSeed = rdSeed
+        self.benchmarkName = benchmarkName
         _eval.ga_eval_mpda = MPDADecoder(ins)
         '''
         deap init
@@ -98,7 +99,7 @@ class MPDA_Genetic_Alg(object):
         # tools.selAutomaticEpsilonLexicase(), tournsize=3
         self.toolbox.register("select", tools.selTournament,tournsize = 3)
 
-        if localSearch == 'None':
+        if localSearch == '_None':
             self._localSearchBoolean = False
             self._algName += localSearch
             # self.
@@ -141,9 +142,12 @@ class MPDA_Genetic_Alg(object):
         random.seed(randomSeed)
 
 
-        f_con = open(BaseDir + '//debugData//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
-        NP = 200
-        NGEN = 300
+        f_con = open(BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
+        save_data = BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat'
+        print(save_data)
+
+        NP = 300
+        NGEN = 1000
         CXPB, MUTPB = 0.5, 0.3
 
         pop = self.toolbox.population(n = NP)
@@ -227,16 +231,14 @@ class MPDA_Genetic_Alg(object):
             logbook.record(gen=g, evals=len(pop), **record)
             print(logbook.stream)
             self.writeDir(f_con, record, g, NFE = NFE)
-
-
+            if NFE > 30E4:
+                break
         print('hof = ', hof)
         print("Best individual is ", hof[0], hof[0].fitness.values[0])
         # f_con.write(hof)
         f_con.write(str(hof[0]) + '\n')
         f_con.write(str(hof[0].fitness.values[0]) + '\n')
         f_con.close()
-        # import pickle
-        # pickle.dump(logbook, BaseDir + '//debugData//'+ str(self._algName) + 'r_' + str(randomSeed) + '.dp')
         pass
 
     def __str__(self):
