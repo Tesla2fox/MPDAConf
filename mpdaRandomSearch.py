@@ -15,7 +15,7 @@ if __name__ == '__main__':
     min_makespan = sys.float_info.max
     min_x = object
     start = time.perf_counter()
-    for i in range(40000):
+    for i in range(300000):
         x = generateRandEncode(robNum= ins._robNum, taskNum= ins._taskNum)
         # print(x)
         validStateBoolean,actSeq = decoder.decode(x)
@@ -27,7 +27,6 @@ if __name__ == '__main__':
         if makespan< min_makespan:
             min_x  = x
             min_makespan = makespan
-
         makespanLst.append(makespan)
         degRand.write(str(i) + '  ' + str(makespan) + '\n')
         degRand.flush()

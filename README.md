@@ -44,9 +44,45 @@ The selection method also will adopt the classical methods
 
 
 
+
+
+- [ ] Complete the EDA as a comparison method
+- [ ] 
+- [ ] 
+
+
+
+## The most important thing which I need to handle right now is how to design an efficient local search method.
+
+
+
+To do list:
+
+- [ ] check whether the fitness decreases as  generations of the algorithm monotonically or not. 
+- [ ] Many genotypes may correspond a same **Phenotype**. So in the local search process, the neighbourhood may be defined by the phenotype. Thus, the _VINSERT method may have some good performance, is there some wrong of my experiments?
+- [ ] the probability of the local search method 
+- [ ] How to define a neighbour of a solution. And find how many LS solution of an Individual.
+- [ ] Complete the hybrid local search method to promote the efficiency of the propose algorithm. Maybe at the begining, we can use the TRI method, and then we use the insert or swap method to promote the efficiency of my algorithm. Refer to the Mei's paper.
+- [ ] Why is the **_VINSERT** method so worse. The performance of it even worse than the SWAP AND INSERT METHOD?   Because the _VINSERT maybe change the solution too much so that like a mutant process.
+- [ ] But I still think the _VINSERT method which has some advantages. Because it find a real neighbour, comparing to the  _SWAP AND _INSERT method which find a virtual neighbour and maybe need to evaluate a same solution.
+- [ ] Read more paper about the local search. 
+- [ ]  resolve the problem (that the algorithm is convergencing so quickly)  methods (the **selection method and the restart method**)
+- [ ] the time complexity  of decoding method need to be analyzed
+- [ ] The selection method need to be reviesed.
+- [ ] So the key idea of my local search method is hybrid of _TRI and some search method on phenotypes.
+- [ ] The infeasiable solution which should be used during the search processs.
+
+
+
+Why do we add the local search leading to decrease the efficiency  of algorithm?
+
+1. maybe the population converges so quick so that the local search method only computates invalidly.
+2. the local search method can not  a better solution easily. 
+
+
+
 Some notes:
 You are exactly correct. In Python 3, map returns an iterator, which you can only iterate over once. If you iterate over an iterator a second time, it will raise StopIteration immediately, as though it were empty. max consumes the whole thing, and min sees the iterator as empty. If you need to use the elements more than once, you need to call list to get a list instead of an iterator.
-
 
 
 
@@ -71,6 +107,8 @@ TRDIAGNLE localsearch method may promote the fitnees of MPDA GA search process.
 
 
 
+
+
 #### The local search method maybe need to revised , the clone method will cost too many time 
 
-
+8-8 the minimal makespan is equal to 631.

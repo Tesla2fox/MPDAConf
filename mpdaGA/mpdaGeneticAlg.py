@@ -5,6 +5,7 @@ import mpdaGA.mpdaCrossover as _crossover
 import  mpdaGA.mpdaGAEval as _eval
 import mpdaGA.mpdaGAInit as _init
 import mpdaGA.mpdaLocalSearch as _local
+import mpdaGA.mpdaReStart as _restart
 
 from mpdaInstance import  MPDAInstance
 from mpdaDecodeMethod.mpdaDecode import MPDADecoder
@@ -33,6 +34,7 @@ class DecoderType(Enum):
 
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
+                 reStart = '_None',
                  saveData = None, rdSeed = 1):
 
         self._ins = ins
@@ -58,6 +60,9 @@ class MPDA_Genetic_Alg(object):
 
         _local.IND_ROBNUM = self._robNum
         _local.IND_TASKNUM = self._taskNum
+
+        _restart.IND_ROBNUM = self._robNum
+        _restart.IND_TASKNUM = self._taskNum
 
         self.rdSeed = rdSeed
         self.benchmarkName = benchmarkName
@@ -97,12 +102,12 @@ class MPDA_Genetic_Alg(object):
         # is replaced by the 'fittest' (best) of three individuals
         # drawn randomly from the current generation.
         # tools.selAutomaticEpsilonLexicase(), tournsize=3
+
         self.toolbox.register("select", tools.selTournament,tournsize = 3)
 
         if localSearch == '_None':
             self._localSearchBoolean = False
             self._algName += localSearch
-            # self.
         elif localSearch == '_SWAP':
             self._localSearchBoolean = True
             self.toolbox.register("localSearch",_local.mpda_swap_LS)
@@ -135,19 +140,36 @@ class MPDA_Genetic_Alg(object):
             _local.TOOLBOX = self.toolbox
         else:
             raise  Exception('there is no local method')
-        pass
+            pass
+
+        _restart.TOOLBOX = self.toolbox
+        if reStart == '_None':
+            self._reStartBoolean = False
+            self._algName += reStart
+
+        elif reStart == '_REGEN':
+            self._reStartBoolean = True
+            self._algName += reStart
+            self.toolbox.register('reStart',_restart.mpda_regenerate)
+        elif reStart == '_PREGEN':
+            self._reStartBoolean = True
+            self._algName += reStart
+            self.toolbox.register('reStart',_restart.mpda_particalRegenerate)
+        else:
+            raise Exception('there is no restart method')
+            pass
+
     def run(self):
 
         randomSeed = self.rdSeed
         random.seed(randomSeed)
-
 
         f_con = open(BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
         save_data = BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat'
         print(save_data)
 
         NP = 300
-        NGEN = 1000
+        NGEN = int(30E4)
         CXPB, MUTPB = 0.5, 0.3
 
         pop = self.toolbox.population(n = NP)
@@ -159,8 +181,7 @@ class MPDA_Genetic_Alg(object):
         stats.register("min", numpy.min)
         stats.register("max", numpy.max)
         logbook = tools.Logbook()
-        logbook.header = "gen", "evals", "std", "min", "avg", "max"
-
+        logbook.header = "gen", "min", "std", "avg", "max"
 
         NFE = 0
         fitnesses = map(self.toolbox.evaluate, pop)
@@ -171,12 +192,14 @@ class MPDA_Genetic_Alg(object):
             ind.actionSeq = act_seq
 
         record = stats.compile(pop)
-        logbook.record(gen=0, evals=len(pop), **record)
+        logbook.record(gen=0, **record)
         print(logbook.stream)
         self.writeDir(f_con, record, 0, NFE = NFE)
-
+        # VLSNFELST = []
+        LSNFE  = 0
+        VLSNFE = 0
+        VLSNFELST = [VLSNFE]
         for g in range(1, NGEN + 1):
-
             offspring = []
             for _ in range(100):
                 op_choice = random.random()
@@ -207,15 +230,21 @@ class MPDA_Genetic_Alg(object):
             # Select the next generation population
             pop[:] = self.toolbox.select(pop + offspring, NP)
             hof.update(pop)
-
+            # for _ in pop:
+            #     print(_)
+            # print(pop)
+            # print('b LS')
+            # logbook.record(gen=g, evals=len(pop), **record)
+            # print(logbook.stream)
             '''
             local search
             '''
             if self._localSearchBoolean:
-                for ind in pop:
+                for i,ind in enumerate(pop):
                     # bf = ind.fitness.values[0]
                     if random.random() < self._LSP:
                         # lInd = self.toolbox.clone(ind)
+                        # print(ind)
                         lIndLst = self.toolbox.localSearch(ind)
                         for lInd in lIndLst:
                             del lInd.fitness.values
@@ -223,24 +252,66 @@ class MPDA_Genetic_Alg(object):
                             ms,act_seq = self.toolbox.evaluate(lInd)
                             lInd.fitness.values = (ms,)
                             lInd.actionSeq = act_seq
-                            if lInd.fitness.values[0] < ind.fitness.values[0]:
-                                ind = lInd
-                        NFE += len(lIndLst)
+                        minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                        # try:
+                        # print(minlInd.fitness.values[0])
+                        if minlInd.fitness.values[0] <= ind.fitness.values[0]:
 
+                            pop[i] = minlInd
+                            # print(ind)
+                            # exit()
+                            # print(len(lIndLst))
+                            VLSNFE += len(lIndLst)
+                            # print(VLSNFE)
+                        NFE += len(lIndLst)
+                        LSNFE += len(lIndLst)
             record = stats.compile(pop)
-            logbook.record(gen=g, evals=len(pop), **record)
+            logbook.record(gen=g, **record)
             print(logbook.stream)
             self.writeDir(f_con, record, g, NFE = NFE)
+            VLSNFELST.append(VLSNFE - VLSNFELST[-1])
+            # print(logbook.select('gen'))
+            # print(logbook.select('min'))
+            # exit()
+
+            if self._reStartBoolean:
+                minLst = logbook.select('min')
+                if g <= 10:
+                    pass
+                elif minLst[-1] == minLst[-11]:
+                    print('restart   ==== ')
+                    _nfe,pop = self.toolbox.reStart(pop)
+                    fitnesses = map(self.toolbox.evaluate, pop)
+                    NFE += _nfe
+                    for ind, fit in zip(pop, fitnesses):
+                        ms, act_seq = fit
+                        ind.fitness.values = (ms,)
+                        ind.actionSeq = act_seq
+                else:
+                    pass
             if NFE > 30E4:
                 break
         print('hof = ', hof)
         print("Best individual is ", hof[0], hof[0].fitness.values[0])
+        print('NFE = ', NFE)
+        print('LSNFE = ', LSNFE)
+        print('VLSNFE = ', VLSNFE)
         # f_con.write(hof)
         f_con.write(str(hof[0]) + '\n')
-        f_con.write(str(hof[0].fitness.values[0]) + '\n')
+        f_con.write('min  '+ str(hof[0].fitness.values[0]) + '\n')
+        f_con.write('NFE '+ str(NFE)+ '\n')
+        f_con.write('LSNFE '+ str(LSNFE)+ '\n')
+        f_con.write('VLSNFE '+ str(VLSNFE)+ '\n')
         f_con.close()
         pass
-
+        # import plotly.graph_objects as go
+        # xLst = []
+        # yLst = []
+        # for x,y in enumerate(VLSNFELST):
+        #     xLst.append(x)
+        #     yLst.append(y)
+        # fig = go.Figure(data = go.Scatter(x= xLst, y =yLst))
+        # fig.show()
     def __str__(self):
         return self._algName
 
