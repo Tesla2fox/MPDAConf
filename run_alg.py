@@ -20,8 +20,10 @@ if __name__ == '__main__':
     print('begin to run \n')
     ins = MPDAInstance()
     insConfDir = './/benchmark//'
-
-    if len(sys.argv)  == 4:
+    print(sys.argv)
+    print(len(sys.argv))
+    
+    if len(sys.argv)  == 5:
         benchmarkName = sys.argv[1]
         randomSeed = int(sys.argv[2])
         localSearch = sys.argv[3]
@@ -34,12 +36,13 @@ if __name__ == '__main__':
         reStart = '_REGEN'
         reStart = '_PREGEN'
     else :
+        raise Exception('something wrong on the sys.argv')
         pass
     # else:
     #
     #     raise Exception('xxx')
     localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST']
-    reStartLst = ['_NoRe','_REGEN','_PREGEN']
+    reStartLst = ['_NORE','_REGEN','_PREGEN']
     if localSearch not in localSearchLst:
         print(localSearch)
         raise  Exception('not in the localSearchLst')

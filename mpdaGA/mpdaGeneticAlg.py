@@ -34,7 +34,7 @@ class DecoderType(Enum):
 
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
-                 reStart = '_None',
+                 reStart = '_NORE',
                  saveData = None, rdSeed = 1):
 
         self._ins = ins
@@ -105,7 +105,7 @@ class MPDA_Genetic_Alg(object):
 
         self.toolbox.register("select", tools.selTournament,tournsize = 3)
 
-        if localSearch == '_None':
+        if localSearch == '_NORE':
             self._localSearchBoolean = False
             self._algName += localSearch
         elif localSearch == '_SWAP':
@@ -143,7 +143,7 @@ class MPDA_Genetic_Alg(object):
             pass
 
         _restart.TOOLBOX = self.toolbox
-        if reStart == '_None':
+        if reStart == '_NORE':
             self._reStartBoolean = False
             self._algName += reStart
 
