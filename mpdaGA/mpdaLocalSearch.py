@@ -89,6 +89,19 @@ def permutationSinglePointSwap(perm):
     return perm
 
 
+def mpda_tri_swap_LS(ind):
+    if len(ind.actionSeq._arrCmpltTaskLst) == 0:
+        return mpda_swap_LS(ind)
+    else:
+        robID, taskID = ind.actionSeq._arrCmpltTaskLst[0]
+        perm = ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)]
+        for i in range(perm.index(taskID),IND_TASKNUM - 1):
+            perm[i] = perm[i + 1]
+        perm[-1] = taskID
+        # print(ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)])
+        ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)] =  perm
+        return [ind]
+
 def mpda_triangle_LS(ind):
     if len(ind.actionSeq._arrCmpltTaskLst) == 0:
         return []
@@ -101,4 +114,3 @@ def mpda_triangle_LS(ind):
         # print(ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)])
         ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)] =  perm
         return [ind]
-

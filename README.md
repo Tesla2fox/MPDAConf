@@ -101,6 +101,8 @@ TRDIAGNLE localsearch method may promote the fitnees of MPDA GA search process.
 
 1. The very small excuting time need to be found and revised.
 
+The restart method need to be revised.
+
 
 
 
@@ -111,4 +113,3 @@ TRDIAGNLE localsearch method may promote the fitnees of MPDA GA search process.
 
 #### The local search method maybe need to revised , the clone method will cost too many time 
 
-8-8 the minimal makespan is equal to 631.
