@@ -34,7 +34,7 @@ class DecoderType(Enum):
 
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
-                 reStart = '_None',
+                 reStart = '_NORE',
                  saveData = None, rdSeed = 1):
 
         self._ins = ins
@@ -94,7 +94,7 @@ class MPDA_Genetic_Alg(object):
 
         # register a mutation operator with a probability to
         # flip each attribute/gene of 0.05
-        self.toolbox.register("mutate", _mutate.mpda_mutate, indpb= 0.1)
+        self.toolbox.register("mutate", _mutate.mpda_mutate, indpb=0.01)
         # tools.mutShuffleIndexes
         # tools.mutShuffleIndexes()
         # operator for selecting individuals for breeding the next
@@ -105,7 +105,7 @@ class MPDA_Genetic_Alg(object):
 
         self.toolbox.register("select", tools.selTournament,tournsize = 3)
 
-        if localSearch == '_None':
+        if localSearch == '_NORE':
             self._localSearchBoolean = False
             self._algName += localSearch
         elif localSearch == '_SWAP':
@@ -138,18 +138,12 @@ class MPDA_Genetic_Alg(object):
             self._algName += localSearch
             self._LSP = 0.7
             _local.TOOLBOX = self.toolbox
-        elif localSearch == '_TRISWAP':
-            self._localSearchBoolean = True
-            self.toolbox.register("localSearch",_local.mpda_tri_swap_LS)
-            self._algName += localSearch
-            self._LSP = 0.7
-            _local.TOOLBOX = self.toolbox
         else:
             raise  Exception('there is no local method')
             pass
 
         _restart.TOOLBOX = self.toolbox
-        if reStart == '_NoRe':
+        if reStart == '_NORE':
             self._reStartBoolean = False
             self._algName += reStart
 
@@ -176,7 +170,7 @@ class MPDA_Genetic_Alg(object):
 
         NP = 300
         NGEN = int(30E4)
-        CXPB, MUTPB = 0.5, 0.1
+        CXPB, MUTPB = 0.5, 0.3
 
         pop = self.toolbox.population(n = NP)
 
@@ -207,17 +201,14 @@ class MPDA_Genetic_Alg(object):
         VLSNFELST = [VLSNFE]
         for g in range(1, NGEN + 1):
             offspring = []
-            for _ in range(NP):
+            for _ in range(100):
                 op_choice = random.random()
                 if op_choice < CXPB:  # Apply crossover
                     ind1, ind2 = map(self.toolbox.clone, random.sample(pop, 2))
                     ind1, ind2 = self.toolbox.mate(ind1, ind2)
                     del ind1.fitness.values
                     del ind1.actionSeq
-                    del ind2.fitness.values
-                    del ind2.actionSeq
                     offspring.append(ind1)
-                    offspring.append(ind2)
                 elif op_choice < CXPB + MUTPB:  # Apply mutation
                     ind = self.toolbox.clone(random.choice(pop))
                     ind, = self.toolbox.mutate(ind)
@@ -226,8 +217,6 @@ class MPDA_Genetic_Alg(object):
                     offspring.append(ind)
                 else:  # Apply reproduction
                     pass
-
-            # print(len(offspring))
                     # offspring.append(random.choice(pop))
             # Evaluate the individuals with an invalid fitness
             invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
@@ -257,31 +246,40 @@ class MPDA_Genetic_Alg(object):
                         # lInd = self.toolbox.clone(ind)
                         # print(ind)
                         lIndLst = self.toolbox.localSearch(ind)
-                        if len(lIndLst) != 0:
-                            for lInd in lIndLst:
-                                del lInd.fitness.values
-                                del lInd.actionSeq
-                                ms,act_seq = self.toolbox.evaluate(lInd)
-                                lInd.fitness.values = (ms,)
-                                lInd.actionSeq = act_seq
-                            minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
-                            if minlInd.fitness.values[0] <= ind.fitness.values[0]:
-                                pop[i] = minlInd
-                                VLSNFE += len(lIndLst)
-                            NFE += len(lIndLst)
-                            LSNFE += len(lIndLst)
+                        for lInd in lIndLst:
+                            del lInd.fitness.values
+                            del lInd.actionSeq
+                            ms,act_seq = self.toolbox.evaluate(lInd)
+                            lInd.fitness.values = (ms,)
+                            lInd.actionSeq = act_seq
+                        minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                        # try:
+                        # print(minlInd.fitness.values[0])
+                        if minlInd.fitness.values[0] <= ind.fitness.values[0]:
+
+                            pop[i] = minlInd
+                            # print(ind)
+                            # exit()
+                            # print(len(lIndLst))
+                            VLSNFE += len(lIndLst)
+                            # print(VLSNFE)
+                        NFE += len(lIndLst)
+                        LSNFE += len(lIndLst)
             record = stats.compile(pop)
             logbook.record(gen=g, **record)
             print(logbook.stream)
             self.writeDir(f_con, record, g, NFE = NFE)
             VLSNFELST.append(VLSNFE - VLSNFELST[-1])
+            # print(logbook.select('gen'))
+            # print(logbook.select('min'))
+            # exit()
+
             if self._reStartBoolean:
                 minLst = logbook.select('min')
                 if g <= 10:
                     pass
                 elif minLst[-1] == minLst[-11]:
-                    # print('restart   ==== ')
-                    print('restart the population')
+                    print('restart   ==== ')
                     _nfe,pop = self.toolbox.reStart(pop)
                     fitnesses = map(self.toolbox.evaluate, pop)
                     NFE += _nfe
