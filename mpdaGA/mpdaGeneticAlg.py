@@ -138,6 +138,12 @@ class MPDA_Genetic_Alg(object):
             self._algName += localSearch
             self._LSP = 0.7
             _local.TOOLBOX = self.toolbox
+        elif localSearch == '_TRISWAP':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_tri_swap_LS)
+            self._algName += localSearch
+            self._LSP = 0.7
+            _local.TOOLBOX = self.toolbox
         else:
             raise  Exception('there is no local method')
             pass

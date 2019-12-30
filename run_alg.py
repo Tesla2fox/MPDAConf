@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # else:
     #
     #     raise Exception('xxx')
-    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST']
+    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST','_TRISWAP']
     reStartLst = ['_NORE','_REGEN','_PREGEN']
     if localSearch not in localSearchLst:
         print(localSearch)
