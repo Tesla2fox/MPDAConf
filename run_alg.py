@@ -32,9 +32,9 @@ if __name__ == '__main__':
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         randomSeed = 1
         localSearch = '_TRI'
-        localSearch = '_SWAP'
+        #localSearch = '_SWAP'
         reStart = '_REGEN'
-        reStart = '_PREGEN'
+        #reStart = '_PREGEN'
     else :
         raise Exception('something wrong on the sys.argv')
         pass

@@ -246,25 +246,26 @@ class MPDA_Genetic_Alg(object):
                         # lInd = self.toolbox.clone(ind)
                         # print(ind)
                         lIndLst = self.toolbox.localSearch(ind)
-                        for lInd in lIndLst:
-                            del lInd.fitness.values
-                            del lInd.actionSeq
-                            ms,act_seq = self.toolbox.evaluate(lInd)
-                            lInd.fitness.values = (ms,)
-                            lInd.actionSeq = act_seq
-                        minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
-                        # try:
-                        # print(minlInd.fitness.values[0])
-                        if minlInd.fitness.values[0] <= ind.fitness.values[0]:
+                        if len(lIndLst) > 0:
+                            for lInd in lIndLst:
+                                del lInd.fitness.values
+                                del lInd.actionSeq
+                                ms,act_seq = self.toolbox.evaluate(lInd)
+                                lInd.fitness.values = (ms,)
+                                lInd.actionSeq = act_seq
+                            minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                            # try:
+                            # print(minlInd.fitness.values[0])
+                            if minlInd.fitness.values[0] <= ind.fitness.values[0]:
 
-                            pop[i] = minlInd
-                            # print(ind)
-                            # exit()
-                            # print(len(lIndLst))
-                            VLSNFE += len(lIndLst)
-                            # print(VLSNFE)
-                        NFE += len(lIndLst)
-                        LSNFE += len(lIndLst)
+                                pop[i] = minlInd
+                                # print(ind)
+                                # exit()
+                                # print(len(lIndLst))
+                                VLSNFE += len(lIndLst)
+                                # print(VLSNFE)
+                            NFE += len(lIndLst)
+                            LSNFE += len(lIndLst)
             record = stats.compile(pop)
             logbook.record(gen=g, **record)
             print(logbook.stream)
