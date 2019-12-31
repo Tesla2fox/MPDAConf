@@ -6,6 +6,7 @@ import  mpdaGA.mpdaGAEval as _eval
 import mpdaGA.mpdaGAInit as _init
 import mpdaGA.mpdaLocalSearch as _local
 import mpdaGA.mpdaReStart as _restart
+import mpdaGA.mpdaSelect as _select
 
 from mpdaInstance import  MPDAInstance
 from mpdaDecodeMethod.mpdaDecode import MPDADecoder
@@ -102,10 +103,12 @@ class MPDA_Genetic_Alg(object):
         # is replaced by the 'fittest' (best) of three individuals
         # drawn randomly from the current generation.
         # tools.selAutomaticEpsilonLexicase(), tournsize=3
+        self.toolbox.register("select", _select.selRoulette)
+        self.toolbox.register("select",tools.selTournament, tournsize = 3)
+            # ()
+            #                   tools.selTournament,tournsize = 3)
 
-        self.toolbox.register("select", tools.selTournament,tournsize = 3)
-
-        if localSearch == '_NORE':
+        if localSearch == '_None':
             self._localSearchBoolean = False
             self._algName += localSearch
         elif localSearch == '_SWAP':
@@ -161,6 +164,10 @@ class MPDA_Genetic_Alg(object):
             self._reStartBoolean = True
             self._algName += reStart
             self.toolbox.register('reStart',_restart.mpda_particalRegenerate)
+        elif reStart == '_ELRE':
+            self._reStartBoolean = True
+            self._algName += reStart
+            self.toolbox.register('reStart',_restart.mpda_eliteRegenerate)
         else:
             raise Exception('there is no restart method')
             pass
@@ -280,12 +287,10 @@ class MPDA_Genetic_Alg(object):
             # print(logbook.select('gen'))
             # print(logbook.select('min'))
             # exit()
-
             if self._reStartBoolean:
-                minLst = logbook.select('min')
-                if g <= 10:
-                    pass
-                elif minLst[-1] == minLst[-11]:
+                # print(record)
+                # exit()
+                if record['std'] < record['avg']*0.001:
                     print('restart   ==== ')
                     _nfe,pop = self.toolbox.reStart(pop)
                     fitnesses = map(self.toolbox.evaluate, pop)

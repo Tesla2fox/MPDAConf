@@ -31,10 +31,13 @@ if __name__ == '__main__':
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         randomSeed = 1
-        localSearch = '_TRI'
+        localSearch = '_None'
+        # localSearch = '_TRI'
         #localSearch = '_SWAP'
-        reStart = '_REGEN'
+        # reStart = '_REGEN'
+        # reStart = '_ELRE'
         #reStart = '_PREGEN'
+        reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
         pass
@@ -42,7 +45,7 @@ if __name__ == '__main__':
     #
     #     raise Exception('xxx')
     localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST','_TRISWAP']
-    reStartLst = ['_NORE','_REGEN','_PREGEN']
+    reStartLst = ['_NORE','_REGEN','_PREGEN', '_ELRE']
     if localSearch not in localSearchLst:
         print(localSearch)
         raise  Exception('not in the localSearchLst')

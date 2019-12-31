@@ -28,3 +28,14 @@ def mpda_particalRegenerate(pop):
             NFE += 1
     return NFE,pop
 
+def mpda_eliteRegenerate(pop):
+    np = len(pop)
+    NFE = 0
+    for i in range(np):
+        if random.random() < 0.9:
+            pop[i] = TOOLBOX.individual()
+            NFE += 1
+    return NFE,pop
+    # sorted(pop)
+
+

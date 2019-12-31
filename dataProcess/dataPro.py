@@ -7,25 +7,25 @@ import plotly
 from scipy.stats import wilcoxon
 from  functools import cmp_to_key
 import functools
-
+import readcfg as r_d
 
 
 
 def sWRank(data1,data2):
-    print(data1[0], data2[0])
+    # print(data1[0], data2[0])
     return wRank(data1[1],data2[1])
 
 def wRank(data1,data2):
     stat, p = wilcoxon(data1, data2)
     alpha = 0.05
-    print('Statistics=%.3f, p=%.3f' % (stat, p))
+    # print('Statistics=%.3f, p=%.3f' % (stat, p))
     if p > alpha:
-        print(p)
-        print('equal ')
+        # print(p)
+        # print('equal ')
         # raise Exception('xxxx')
-        return True
+        return 0
     else:
-        print('no equal')
+        # print('no equal')
         return np.mean(data2) - np.mean(data1)
 
 #
@@ -50,55 +50,89 @@ WBaseDir = os.path.dirname(SuperiorCatalogue)
 
 class DataPro(object):
     def __init__(self,insName):
-        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_exp_data//' + insName
-        localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI', '_VINSERT']
+        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_ls_data//' + insName
+        localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI', '_VINSERT','_TRISWAP']
+        reStartLst = ['_NORE','_REGEN']
         self.insName = insName
         self.fitDic = dict()
         self.genDic = dict()
         self.NFEDic = dict()
+        self.HOFDic = dict()
+        # root, exsit_dirs, files = \
+        # print(os.walk(BaseDir))
+        # print(list(os.walk(BaseDir)))
+        # # print(exsit_dirs)
+        # for root, exsit_dirs, files in os.walk(BaseDir):
+        #     print('xxx')
+        #     break
+        # exit()
         for root, exsit_dirs, files in os.walk(BaseDir):
             # figData = []
+            # print('xxxxx')
             for localSearch in localSearchLst:
+                for reStart in reStartLst:
+                    dir = 'ga_opt_' + localSearch + reStart
+                    # print(dir)
+                    if dir not in exsit_dirs:
+                        print(dir,' is not exsit')
+                        continue
+                    dataDir = BaseDir + '//ga_opt_' + localSearch + reStart
+                    # print(dataDir)
+                    print(dataDir)
+                    for root, dirs, files in os.walk(dataDir):
+                        print(files)
+                    genLstLst = []
+                    #    [[] for _ in range(len(files))]
+                    fitLstLst = []
+                    NFELstLst = []
+                    self.HOFDic[localSearch + reStart] = []
+                    # [[] for _ in range(len(files))]
+                    print('file Num = ', len(files))
 
-                dir = 'ga_opt_' + localSearch
-                print(dir)
-                if dir not in exsit_dirs:
-                    continue
-                dataDir = BaseDir + '//ga_opt_' + localSearch
-                print(dataDir)
-                for root, dirs, files in os.walk(dataDir):
-                    print(files)
-                genLstLst = []
-                # [[] for _ in range(len(files))]
-                fitLstLst = []
-                NFELstLst = []
-                # [[] for _ in range(len(files))]
-                print('file Num = ', len(files))
-                for file in files:
-                    genLst = []
-                    fitLst = []
-                    NFELst = []
-                    with open(dataDir + '//' + file) as txtData:
-                        lines = txtData.readlines()
-                        for line in lines:
-                            lineData = line.split()
-                            if (len(lineData) == 0):
-                                continue
-                            if (len(lineData) == 7):
-                                # print(lineData)
-                                if lineData[0] == 'gen':
-                                    genLst.append(int(lineData[1]))
-                                    fitLst.append(float(lineData[5]))
-                                    NFELst.append(float(lineData[2]))
-                    fitLstLst.append(fitLst)
-                    genLstLst.append(genLst)
-                    NFELstLst.append(NFELst)
-                    # print(genLst)
-                    # print(fitLst)
-                self.fitDic[localSearch] = fitLstLst
-                self.genDic[localSearch] = genLstLst
-                self.NFEDic[localSearch] = NFELstLst
-                print(self.fitDic)
+                    for i,file in enumerate(files):
+                            # exit()
+                        if len(self.HOFDic[localSearch + reStart]) == 30:
+                            break
+                        # print(i)
+                        # if i >= 30:
+                        #     break
+                        genLst = []
+                        fitLst = []
+                        NFELst = []
+                        with open(dataDir + '//' + file) as txtData:
+                            lines = txtData.readlines()
+                            for line in lines:
+                                lineData = line.split()
+                                if (len(lineData) == 0):
+                                    continue
+                                if (len(lineData) == 7):
+                                    # print(lineData)
+                                    if lineData[0] == 'gen':
+                                        genLst.append(int(lineData[1]))
+                                        fitLst.append(float(lineData[5]))
+                                        NFELst.append(float(lineData[2]))
+                        # print(file,' ', len(genLst))
+                        fitLstLst.append(fitLst)
+                        genLstLst.append(genLst)
+                        NFELstLst.append(NFELst)
+                        # print(len())
+                        rdData = r_d.Read_Cfg(dataDir + '//' + file)
+                        try:
+                            self.HOFDic[localSearch + reStart].append(rdData.getSingleVal('min'))
+                        except Exception as e:
+                            print(dataDir +'//' + file)
+                            print(e)
+                            pass
+                    if self.HOFDic[localSearch+ reStart] == 30:
+                        pass
+                    # elif
+                        # print(genLst)
+                        # print(fitLst)
+                    self.fitDic[localSearch + reStart] = fitLstLst
+                    self.genDic[localSearch+ reStart] = genLstLst
+                    self.NFEDic[localSearch+ reStart] = NFELstLst
+                    # print(self.fitDic)
+            break
             # print(self.fitDic)
     def drawGen(self):
         mean_figData = []
@@ -146,25 +180,37 @@ class DataPro(object):
         mean_figData = []
         min_figData = []
         for key in self.fitDic:
+            if len(self.HOFDic[key]) != 30:
+                continue
             fitLstLst = self.fitDic[key]
-            _fitLstLst = [[] for _ in range(len(fitLstLst[0]))]
+            # print(key)
+            # for xx in fitLstLst:
+            #     print(len(xx))
+            max_gen = len(max(fitLstLst,key = lambda  x: len(x)))
+            print('max_gen', max_gen)
+            _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(fitLstLst)):
-                for ind, unit in enumerate(fitLstLst[rt]):
+                for ind, unit in enumerate(fitLstLst[3]):
+                # for ind, unit in enumerate(fitLstLst[rt]):
                     _fitLstLst[ind].append(unit)
+                break
 
             NFELstLst = self.NFEDic[key]
-            _NFELstLst = [[] for _ in range(len(NFELstLst[0]))]
+            _NFELstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(NFELstLst)):
-                for ind, unit in enumerate(NFELstLst[rt]):
+                for ind, unit in enumerate(NFELstLst[3]):
+                # for ind, unit in enumerate(NFELstLst[rt]):
                     _NFELstLst[ind].append(unit)
-
+                break
             _minLst = []
             _meanLst = []
             # _genLst = []
             _nfeLst = []
             for gen, _data in enumerate(_fitLstLst):
+                if len(_data) == 0 :
+                    break
                 _meanLst.append(np.mean(_data))
                 _nfeLst.append(np.mean(_NFELstLst[gen]))
                 # _genLst.append(gen)
@@ -195,28 +241,41 @@ class DataPro(object):
         # fig.write_image(WBaseDir + '//fig//min_'+ self.insName + '.png')
         # exit()
 
+    def drawBox(self):
+        figData = []
+
+        for key in self.HOFDic:
+            figData.append(go.Box(y=self.HOFDic[key],name = key))
+
+
+        layout = dict()
+        fig = go.Figure(data=figData, layout=layout)
+        # fig.show()
+        plotly.offline.plot(fig, filename=WBaseDir + '//fig//_' + self.insName + '_box')
+
     def rankSum(self):
 
-        rankDicData = dict()
-        for key in self.fitDic:
-            rankDicData[key] = []
-
-
-        for key in self.fitDic:
-            fitLstLst = self.fitDic[key]
-
-            for fitLst in fitLstLst:
-                rankDicData[key].append(fitLst[-1])
-
-        print(rankDicData)
-
+        # rankDicData = dict()
         rankLstData = []
-        for key in rankDicData:
-            rankLstData.append((key,rankDicData[key]))
+        for key in self.HOFDic:
+            if len(self.HOFDic[key]) == 30:
+                # rankDicData[]
+                rankLstData.append((key,self.HOFDic[key]))
         print(rankLstData)
-        sorted(rankLstData, key = cmp_to_key(sWRank))
-        print(rankLstData)
-        
+        # rankLstData = sorted(rankLstData, key = cmp_to_key(sWRank))
+        # for key,data in rankLstData:
+        #     print(key)
+        rankLstData = sorted(rankLstData, key = lambda x : np.mean(x[1]) )
+        # print(rankLstData)
+        for key,data in rankLstData:
+            print(key,' ',np.mean(data))
+
+
+
+        rankLstData = sorted(rankLstData, key = lambda x : np.std(x[1]) )
+        # print(rankLstData)
+        for key,data in rankLstData:
+            print(key,' ',np.std(data))
 
 
 
@@ -227,9 +286,22 @@ class DataPro(object):
 
 
 if __name__ == '__main__':
-   insName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
-   d_pro  = DataPro(insName)
-   d_pro.rankSum()
+    insNameLst = ['8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
+                  '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
+                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins']
+
+    for insName in insNameLst:
+        print('insName = ',insName)
+        d_pro  = DataPro(insName)
+        # d_pro.drawBox()
+        # break
+        # d_pro.rankSum()
+        # break
+        d_pro.drawNFE()
+        break
+
+
+   # d_pro.rankSum()
    # d_pro.drawNFE()
    # d_pro.drawGen()
 

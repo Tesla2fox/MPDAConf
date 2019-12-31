@@ -17,7 +17,7 @@ def mpda_eval(individual):
     # print(encode)
     validBoolean,actSeq = ga_eval_mpda.decode(encode)
     if not validBoolean:
-        ms = sys.float_info.max
+        ms = 9999999999
     else:
         ms = actSeq[-1].eventTime
     return ms,actSeq

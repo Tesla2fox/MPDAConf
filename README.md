@@ -105,6 +105,20 @@ The restart method need to be revised.
 
 
 
+Function of os.walk???
+
+
+There are a few different ways to define the 
+difference between two sequences. To name a few:
+
+Hamming distance: the number of positions at which elements differ.
+
+Levenshtein distance: the minimum number of modifications 
+necessary to get from one sequence to another.
+
+Damerau–Levenshtein distance: an extension of the former
+ that takes into account transpositions.
+
 
 
 
