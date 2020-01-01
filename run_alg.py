@@ -35,9 +35,9 @@ if __name__ == '__main__':
         # localSearch = '_TRI'
         #localSearch = '_SWAP'
         # reStart = '_REGEN'
-        # reStart = '_ELRE'
+        reStart = '_ELRE'
         #reStart = '_PREGEN'
-        reStart = '_NORE'
+        # reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
         pass

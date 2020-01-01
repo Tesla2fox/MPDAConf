@@ -51,8 +51,8 @@ WBaseDir = os.path.dirname(SuperiorCatalogue)
 class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_ls_data//' + insName
-        localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI', '_VINSERT','_TRISWAP']
-        reStartLst = ['_NORE','_REGEN']
+        localSearchLst = ['_None', '_SWAP', '_INSERT','_VINSERT', '_TRI' ,'_TRISWAP']
+        reStartLst = ['_NORE']
         self.insName = insName
         self.fitDic = dict()
         self.genDic = dict()
@@ -191,19 +191,19 @@ class DataPro(object):
             _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(fitLstLst)):
-                for ind, unit in enumerate(fitLstLst[3]):
-                # for ind, unit in enumerate(fitLstLst[rt]):
+                # for ind, unit in enumerate(fitLstLst[3]):
+                for ind, unit in enumerate(fitLstLst[rt]):
                     _fitLstLst[ind].append(unit)
-                break
+                # break
 
             NFELstLst = self.NFEDic[key]
             _NFELstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(NFELstLst)):
-                for ind, unit in enumerate(NFELstLst[3]):
-                # for ind, unit in enumerate(NFELstLst[rt]):
+                # for ind, unit in enumerate(NFELstLst[3]):
+                for ind, unit in enumerate(NFELstLst[rt]):
                     _NFELstLst[ind].append(unit)
-                break
+                # break
             _minLst = []
             _meanLst = []
             # _genLst = []
@@ -243,11 +243,8 @@ class DataPro(object):
 
     def drawBox(self):
         figData = []
-
         for key in self.HOFDic:
             figData.append(go.Box(y=self.HOFDic[key],name = key))
-
-
         layout = dict()
         fig = go.Figure(data=figData, layout=layout)
         # fig.show()
@@ -267,40 +264,38 @@ class DataPro(object):
         #     print(key)
         rankLstData = sorted(rankLstData, key = lambda x : np.mean(x[1]) )
         # print(rankLstData)
+        rankLst = []
+        i = 1
         for key,data in rankLstData:
             print(key,' ',np.mean(data))
-
-
-
-        rankLstData = sorted(rankLstData, key = lambda x : np.std(x[1]) )
-        # print(rankLstData)
-        for key,data in rankLstData:
-            print(key,' ',np.std(data))
-
-
-
-
-
-
-
-
+            rankLst.append((key,i))
+            i += 1
+        return rankLst
 
 if __name__ == '__main__':
     insNameLst = ['8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
                   '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
-                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins']
-
+                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
+                  '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
+                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins']
+    rankDic = dict()
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
         # d_pro.drawBox()
         # break
-        # d_pro.rankSum()
+        rankLst = d_pro.rankSum()
+        for key,order in rankLst:
+            if key not in rankDic:
+                rankDic[key] = []
+            rankDic[key].append(order)
+
         # break
-        d_pro.drawNFE()
-        break
+        # d_pro.drawNFE()
+        # break
 
-
+    for key in rankDic:
+        print(key,'   ',rankDic[key])
    # d_pro.rankSum()
    # d_pro.drawNFE()
    # d_pro.drawGen()

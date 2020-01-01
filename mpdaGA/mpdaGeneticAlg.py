@@ -287,12 +287,20 @@ class MPDA_Genetic_Alg(object):
             # print(logbook.select('gen'))
             # print(logbook.select('min'))
             # exit()
+            if NFE > 30E4:
+                break
             if self._reStartBoolean:
                 # print(record)
                 # exit()
-                if record['std'] < record['avg']*0.001:
+                if g <= 10:
+                    continue
+                minLst = logbook.select('min')
+                # print(minLst)
+                # print(minLst[-11:])
+                if(len(set(minLst[-11:]))==1):
                     print('restart   ==== ')
                     _nfe,pop = self.toolbox.reStart(pop)
+                    print('xxx')
                     fitnesses = map(self.toolbox.evaluate, pop)
                     NFE += _nfe
                     for ind, fit in zip(pop, fitnesses):
@@ -301,8 +309,6 @@ class MPDA_Genetic_Alg(object):
                         ind.actionSeq = act_seq
                 else:
                     pass
-            if NFE > 30E4:
-                break
         print('hof = ', hof)
         print("Best individual is ", hof[0], hof[0].fitness.values[0])
         print('NFE = ', NFE)

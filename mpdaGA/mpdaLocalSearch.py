@@ -88,7 +88,6 @@ def permutationSinglePointSwap(perm):
     perm[index2] = unit1
     return perm
 
-
 def mpda_tri_swap_LS(ind):
     if len(ind.actionSeq._arrCmpltTaskLst) == 0:
         return mpda_swap_LS(ind)

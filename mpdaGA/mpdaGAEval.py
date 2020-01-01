@@ -7,6 +7,7 @@ IND_TASKNUM = 0
 ga_eval_mpda = object
 # MPDADecoder.decode(x)
 def mpda_eval(individual):
+    # print(individual)
     encode =  np.zeros((IND_ROBNUM, IND_TASKNUM), dtype=int)
     i = 0
     for robID in range(IND_ROBNUM):
