@@ -12,11 +12,14 @@ from mpdaInstance import  MPDAInstance
 from mpdaDecodeMethod.mpdaDecode import MPDADecoder
 from mpdaDecodeMethod.mpdaDecoderActSeq import  ActionSeq
 
+from MPDA_decode.MPDA_decode_discrete import  MPDA_Decode_Discrete_RC,MPDA_Decode_Discrete_Base
+
 from deap import base
 from deap import creator
 from deap import tools
 import numpy
 import random
+import time
 
 import os
 
@@ -35,7 +38,7 @@ class DecoderType(Enum):
 
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
-                 reStart = '_NORE',
+                 reStart = '_NORE',decodeMethod = '_NONE',
                  saveData = None, rdSeed = 1):
 
         self._ins = ins
@@ -67,7 +70,12 @@ class MPDA_Genetic_Alg(object):
 
         self.rdSeed = rdSeed
         self.benchmarkName = benchmarkName
-        _eval.ga_eval_mpda = MPDADecoder(ins)
+        if decodeMethod == '_DTRI':
+            MPDA_Decode_Discrete_RC._ins = self._ins
+            MPDA_Decode_Discrete_Base._ins = self._ins
+            _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
+        else:
+            _eval.ga_eval_mpda = MPDADecoder(ins)
         '''
         deap init
         '''
@@ -88,7 +96,15 @@ class MPDA_Genetic_Alg(object):
         # Operator registration
         # ----------
         # register the goal / fitness function
-        self.toolbox.register("evaluate",_eval.mpda_eval)
+        if decodeMethod == '_DTRI':
+            MPDA_Decode_Discrete_RC._ins = self._ins
+            MPDA_Decode_Discrete_Base._ins = self._ins
+            _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
+            self.toolbox.register("evaluate",_eval.mpda_eval_discrete_rc)
+            self._algName += decodeMethod
+        else:
+            _eval.ga_eval_mpda = MPDADecoder(ins)
+            self.toolbox.register("evaluate",_eval.mpda_eval)
 
         # register the crossover operator
         self.toolbox.register("mate", _crossover.mpda_PMX_mate)
@@ -185,8 +201,9 @@ class MPDA_Genetic_Alg(object):
         NGEN = int(30E4)
         CXPB, MUTPB = 0.5, 0.3
 
-        pop = self.toolbox.population(n = NP)
+        start = time.time()
 
+        pop = self.toolbox.population(n = NP)
         hof = tools.HallOfFame(1)
         stats = tools.Statistics(lambda ind: ind.fitness.values)
         stats.register("avg", numpy.mean)
@@ -204,6 +221,8 @@ class MPDA_Genetic_Alg(object):
             ind.fitness.values = (ms,)
             ind.actionSeq = act_seq
 
+        if self._reStartBoolean:
+            rg  = 0
         record = stats.compile(pop)
         logbook.record(gen=0, **record)
         print(logbook.stream)
@@ -292,7 +311,7 @@ class MPDA_Genetic_Alg(object):
             if self._reStartBoolean:
                 # print(record)
                 # exit()
-                if g <= 10:
+                if g <= rg + 10:
                     continue
                 minLst = logbook.select('min')
                 # print(minLst)
@@ -307,6 +326,7 @@ class MPDA_Genetic_Alg(object):
                         ms, act_seq = fit
                         ind.fitness.values = (ms,)
                         ind.actionSeq = act_seq
+                    rg = g
                 else:
                     pass
         print('hof = ', hof)
@@ -314,12 +334,17 @@ class MPDA_Genetic_Alg(object):
         print('NFE = ', NFE)
         print('LSNFE = ', LSNFE)
         print('VLSNFE = ', VLSNFE)
+        # print('complete =',hof[0].actionSeq._arrCmpltTaskLst)
         # f_con.write(hof)
+        end = time.time()
+        runTime = end - start
+        print('runTime',runTime)
         f_con.write(str(hof[0]) + '\n')
         f_con.write('min  '+ str(hof[0].fitness.values[0]) + '\n')
         f_con.write('NFE '+ str(NFE)+ '\n')
         f_con.write('LSNFE '+ str(LSNFE)+ '\n')
         f_con.write('VLSNFE '+ str(VLSNFE)+ '\n')
+        f_con.write('runTime ' + str(runTime) + '\n')
         f_con.close()
         pass
         # import plotly.graph_objects as go

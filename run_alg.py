@@ -33,10 +33,12 @@ if __name__ == '__main__':
         randomSeed = 1
         localSearch = '_None'
         # localSearch = '_TRI'
-        #localSearch = '_SWAP'
+        localSearch = '_SWAP'
         # reStart = '_REGEN'
         reStart = '_ELRE'
         #reStart = '_PREGEN'
+        # decodeMethod = '_DTRI'
+        decodeMethod = '_NONE'
         # reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
@@ -57,7 +59,7 @@ if __name__ == '__main__':
     print(benchmarkName)
     mpda_ga = MPDA_Genetic_Alg(ins, benchmarkName = benchmarkName ,
                                localSearch = localSearch,
-                               reStart = reStart,
+                               reStart = reStart, decodeMethod = decodeMethod,
                                rdSeed = randomSeed)
     print(mpda_ga)
     mpda_ga.run()

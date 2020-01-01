@@ -6,8 +6,9 @@ from mpdaDecodeMethod.mpdaTask import  Task
 from mpdaDecodeMethod.mpdaDecoderActSeq import ActionSeq,ActionTuple,EventType,MPDADecoderActionSeq
 import numpy as np
 from enum import Enum
+from collections import  namedtuple
 
-
+RobTaskPair = namedtuple('RobTaskPair',['robID','taskID'])
 
 
 class CalType(Enum):
@@ -26,6 +27,32 @@ def generateRandEncode(robNum,taskNum):
     return encode
 
 
+
+
+def generateRandPopEncode(robNum,taskNum):
+    pop = []
+    encode = np.zeros((robNum, taskNum),dtype =int)
+    for i in range(robNum):
+        permLst = [x for x in range(taskNum)]
+        np.random.shuffle(permLst)
+        encode[i][:] = permLst
+    robIndLst = [0 for _ in range(robNum)]
+
+    while len(pop) == (robNum*taskNum):
+        rdRobID = np.random.randint(0,robNum -1)
+        rdTaskID = encode[rdRobID][robIndLst[rdRobID]]
+        pop.append(RobTaskPair(rdRobID,rdTaskID))
+        robIndLst[rdRobID] += 1
+
+    '''
+    there are still some problems to construct a 
+    '''
+
+
+
+
+
+
 AbsolutePath = os.path.abspath(__file__)
 # 将相对路径转换成绝对路径
 SuperiorCatalogue = os.path.dirname(AbsolutePath)
@@ -34,7 +61,25 @@ BaseDir = os.path.dirname(SuperiorCatalogue)
 
 degBoolean = False
 
-class MPDADecoder(object):
+class PopDecoder(object):
+    def __init__(self,ins :MPDAInstance):
+        self._insName = ins._insName
+        # readCfg = rd.Read_Cfg(fileName)
+        self._robNum = ins._robNum
+        self._taskNum = ins._taskNum
+            # int(readCfg.getSingleVal('taskNum'))
+        self._threhold = ins._threhold
+        self._robAbiLst  = ins._robAbiLst
+        self._robVelLst = ins._robVelLst
+        self._taskStateLst = ins._taskStateLst
+        self._taskRateLst = ins._taskRateLst
+        self._rob2taskDisMat = ins._rob2taskDisMat
+        self._taskDisMat = ins._taskDisMat
+        if degBoolean:
+            self._degFile = open(BaseDir+ '/debugData/deg.dat', 'w')
+
+
+class MPDATriDecoder(object):
     def __init__(self,ins :MPDAInstance):
         self._insName = ins._insName
         # readCfg = rd.Read_Cfg(fileName)
@@ -53,10 +98,17 @@ class MPDADecoder(object):
 
     def decode(self, x):
         self.encode = x
-        self._actSeq = ActionSeq()
-        self.initStates()
         # if self.decodeProcessor():
-        validStateBoolean = self.decodeProcessor()
+        while True:
+            print('xxx')
+            print(self.encode)
+            self.initStates()
+            self._actSeq = ActionSeq()
+            validStateBoolean,cal_type = self.decodeProcessor()
+            if cal_type == CalType.backCond:
+                continue
+            else:
+                break
         if degBoolean:
             self._degFile.write(str(self.cmpltLst))
         # print(self._actSeq.convert2MultiPerm(self._robNum))
@@ -93,7 +145,7 @@ class MPDADecoder(object):
             task.cmpltTime = sys.float_info.max
             self.taskLst.append(task)
 
-        # self.decodeTime = 0
+        self.decodeTime = 0
         # self.validStateBool = True
     def decodeProcessor(self):
         while not self.allTaskCmplt():
@@ -104,15 +156,18 @@ class MPDADecoder(object):
                 encodeInd = rob.encodeIndex
                 taskID = self.encode[actionID][encodeInd]
                 self._actSeq.append(ActionTuple(robID =actionID,taskID= taskID, eventType = EventType.arrive,eventTime = arriveTime))
+                self.decodeTime = rob.arriveTime
 
                 if self.cmpltLst[taskID]:
                     # =============================================================================
                     #  the task has been cmplt
                     # =============================================================================
-                    rob = self.robotLst[actionID]
-                    rob.leaveTime = rob.arriveTime
-                    rob.stateType = RobotState['onTask']
-                    self._actSeq._arrCmpltTaskLst.append((actionID, taskID))
+                    # raise Exception('XXX')
+                    self.arriveCmpltTask(actionID,encodeInd)
+                    # rob = self.robotLst[actionID]
+                    # rob.leaveTime = rob.arriveTime
+                    # rob.stateType = RobotState['onTask']
+                    # self._actSeq._arrCmpltTaskLst.append((actionID, taskID))
                 else:
 # =============================================================================
 # the task has not been cmplt
@@ -139,7 +194,6 @@ class MPDADecoder(object):
                     rob.leaveTime = leaveTime
                     rob.stateType = RobotState['onTask']
 
-
             if cal_type == CalType['leaveCond']:
                 rob = self.robotLst[actionID]
                 taskID = rob.taskID
@@ -148,7 +202,7 @@ class MPDADecoder(object):
                 self.cmpltLst[taskID] = True
                 self._actSeq.append(ActionTuple(robID =actionID,taskID= taskID, eventType = EventType.leave,eventTime = rob.leaveTime))
                 task.cmpltTime = rob.leaveTime
-
+                self.decodetIme = rob.leaveTime
                 coordLst = self.findCoordRobot(actionID)
                 for coordID in coordLst:
                     self.updateRobLeaveCond(robID = coordID)
@@ -166,11 +220,12 @@ class MPDADecoder(object):
                 # invalidFitness = True
                 validStateBool = False
                 break
-
+            if cal_type == CalType.backCond:
+                break
         if not validStateBool:
             pass
             # print('the state is explosion')
-        return  validStateBool
+        return  validStateBool,cal_type
     '''
     some fucntions
     '''
@@ -202,6 +257,10 @@ class MPDADecoder(object):
             self.saveRobotInfo(degFile= self._degFile)
             self._degFile.write(str(actionID) + ' time = '+ str(minTime)
                               + ' type = ' + str(cal_type) + '\n')
+
+        if minTime < self.decodeTime:
+            cal_type = CalType['backCond']
+            raise Exception('xxx')
         # self.saveEventInMemory()
         # if minTime < self.decodeTime:
         #     cal_type = CalType['backCond']
@@ -209,7 +268,6 @@ class MPDADecoder(object):
         #            print(self.decodeTime)
         #            taskID = self.robotLst[actionI].taskID
         #        self.saveRobotInfo()
-
         return cal_type, actionID
 
     def findCoordRobot(self, robID):
@@ -230,6 +288,7 @@ class MPDADecoder(object):
             if self.robotLst[i].taskID == taskID:
                 coordLst.append(i)
         return coordLst
+
     def updateRobLeaveCond(self,robID):
         rob = self.robotLst[robID]
         preTaskID = rob.taskID
@@ -302,21 +361,101 @@ class MPDADecoder(object):
             deg.write(robInfo+'\n')
         deg.write('\n')
         deg.flush()
+
+    def arriveCmpltTask(self,actionID,encodeInd):
+        # self.encode[actionID][encodeInd]
+        compltTaskID = self.encode[actionID][encodeInd]
+        # print(encodeInd)
+        # print(self.encode[actionID][encodeInd])
+        # print(self.encode[actionID])
+        eLst = self.encode[actionID][encodeInd + 1 :]
+        # print(eLst)
+        # print(self.encode[actionID][encodeInd:-1])
+        self.encode[actionID][encodeInd:-1] = eLst[:]
+        self.encode[actionID][-1] = compltTaskID
+        # print(self.encode[actionID])
+        # exit()
+        robID = actionID
+        rob = self.robotLst[actionID]
+        while True:
+            if rob.encodeIndex == (self._taskNum - 1):
+                rob.stopBool = True
+                break
+            taskID = self.encode[robID][rob.encodeIndex]
+            if self.cmpltLst[taskID]:
+                continue
+            else:
+                if encodeInd == 0:
+                    dis = self._rob2taskDisMat[robID][taskID]
+                    dis_time = dis / rob._vel
+
+                roadDur = self.calRoadDur(preTaskID, taskID, robID)
+                arriveTime = rob.leaveTime + roadDur
+                if arriveTime > self.taskLst[taskID].cmpltTime:
+                    continue
+                rob.roadDur = roadDur
+                rob.taskID = taskID
+                rob.arriveTime = rob.leaveTime + rob.roadDur
+                rob.stateType = RobotState['onRoad']
+                break
+            rob.encodeIndex += 1
+
+
+        self.updateRobLeaveCond(robID= actionID)
+        self.encode[actionID][encodeInd] = -1
+        rob = self.robotLst[actionID]
+        while True:
+            if len(rob.cmpltTaskLst) == 0:
+                if encodeInd == self.taskNum - 1:
+                    rob.stopBool = True
+                    break
+                taskID = self.encode[actionID][encodeInd]
+                if taskID < 0:
+                    encodeInd  += 1
+                    continue
+                dis  = self.rob2taskDisMat[actionID][taskID]
+                dis_time = dis/rob.vel
+                rob.arriveTime = dis_time
+                rob.encodeIndex = encodeInd
+                break
+            else:
+                if encodeInd == self.taskNum - 1:
+                    rob.stopBool = True
+                    break
+                taskID = self.encode[actionID][encodeInd]
+                if taskID < 0:
+                    encodeInd  += 1
+                    continue
+                preTaskID = rob.cmpltTaskLst[-1]
+                roadDur = self.calRoadDur(preTaskID,taskID,actionID)
+                rob.arriveTime  = rob.leaveTime + roadDur
+                rob.encodeIndex = encodeInd
+                break
+        rob.taskID = taskID
+
 if __name__ == '__main__':
     print('test_mpdaDecoder')
 
 
     print(BaseDir)
     ins = MPDAInstance()
-    insFileName = BaseDir +'//benchmark//8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins.dat'
+    insFileName = BaseDir +'//benchmark//11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins.dat'
     ins.loadCfg(fileName =  insFileName)
 
-    decoder = MPDADecoder(ins)
 
-    np.random.seed(2)
+    decoder = MPDATriDecoder(ins)
     for _ in range(100):
-        x = generateRandEncode(robNum= ins._robNum, taskNum= ins._taskNum)
+        np.random.seed(2)
+        # x = []
+        # for _ in range(10):
+        #     x.append(RobTaskPair(robID = np.random.randint(0, ins._robNum -1),taskID = np.random.randint(0, ins._taskNum -1)))
         # print(x)
+        #
+        print(_)
+        x = generateRandEncode(robNum= ins._robNum, taskNum= ins._taskNum)
+        # x = [RobTaskPair(robID = 1, taskID = 2),RobTaskPair(robID = 3,taskID = 4)]
+        # print(x)
+        # exit()
         # x = [[6, 1, 0, 7, 5 ,4, 2, 3],
         #     [6, 4, 7 ,0 ,5 ,3 ,2 ,1],
         #     [3, 0 ,4 ,2 ,6 ,7 ,5 ,1],
@@ -326,12 +465,6 @@ if __name__ == '__main__':
         #     [1 ,0 ,3 ,6 ,7 ,4 ,5, 2],
         #     [1, 4, 7, 0, 2, 3, 6, 5]]
         validStateBoolean,actSeq = decoder.decode(x)
-        if not validStateBoolean:
-            ms = 9999999999
-        else:
-            ms = actSeq[-1].eventTime
-        print(ms)
-    exit()
     actSeqDecoder = MPDADecoderActionSeq(ins)
     actSeqDecoder.decode(actSeq)
     # print(np.array(actSeq.convert2MultiPerm(ins._robNum),dtype = object))
@@ -344,8 +477,8 @@ if __name__ == '__main__':
     print('first decoder is over')
     # np.random.seed(1)
 
-    # chrom = [1, 0, 6, 3, 7, 5, 2, 4, 6, 3, 2, 5, 0, 7, 1, 4, 6, 3, 1, 2, 5, 7, 4, 0, 1, 0, 6, 5, 7, 3, 4, 2, 6, 3, 5, 7, 4,
-    #      1, 0, 2, 6, 3, 2, 5, 7, 4, 1, 0, 1, 6, 0, 5, 7, 2, 4, 3, 6, 3, 2, 7, 4, 1, 5, 0]
+    chrom = [1, 0, 6, 3, 7, 5, 2, 4, 6, 3, 2, 5, 0, 7, 1, 4, 6, 3, 1, 2, 5, 7, 4, 0, 1, 0, 6, 5, 7, 3, 4, 2, 6, 3, 5, 7, 4,
+         1, 0, 2, 6, 3, 2, 5, 7, 4, 1, 0, 1, 6, 0, 5, 7, 2, 4, 3, 6, 3, 2, 7, 4, 1, 5, 0]
 
 
     encode =  np.zeros((ins._robNum, ins._taskNum), dtype=int)
@@ -368,6 +501,6 @@ if __name__ == '__main__':
     actSeqDecoder = MPDADecoderActionSeq(ins)
     actSeqDecoder.decode(actSeq)
 
-    actSeqDecoder.drawActionSeqGantt()
-    actSeqDecoder.drawTaskScatter()
-    actSeqDecoder.drawTaskDependence()
+    # actSeqDecoder.drawActionSeqGantt()
+    # actSeqDecoder.drawTaskScatter()
+    # actSeqDecoder.drawTaskDependence()
