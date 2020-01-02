@@ -28,8 +28,10 @@ if __name__ == '__main__':
         randomSeed = int(sys.argv[2])
         localSearch = sys.argv[3]
         reStart = sys.argv[4]
+        decodeMethod = '_NONE'
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
+        benchmarkName = '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins'
         randomSeed = 1
         localSearch = '_None'
         # localSearch = '_TRI'
@@ -38,6 +40,7 @@ if __name__ == '__main__':
         reStart = '_ELRE'
         #reStart = '_PREGEN'
         # decodeMethod = '_DTRI'
+        # decodeMethod = '_NB'
         decodeMethod = '_NONE'
         # reStart = '_NORE'
     else :

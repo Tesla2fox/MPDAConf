@@ -35,3 +35,16 @@ def mpda_eval_discrete_rc(individual):
     if ms == sys.float_info.max :
         ms = 9999999999
     return ms,object
+
+
+def mpda_eval_discrete_nb(individual):
+    encode =  np.zeros((IND_ROBNUM, IND_TASKNUM), dtype=int)
+    i = 0
+    for robID in range(IND_ROBNUM):
+        for taskID in range(IND_TASKNUM):
+            encode[robID][taskID] = individual[i]
+            i += 1
+    ms = ga_eval_mpda.decode(encode)
+    if ms == sys.float_info.max :
+        ms = 9999999999
+    return ms,object

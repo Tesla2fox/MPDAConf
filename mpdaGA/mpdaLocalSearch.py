@@ -48,8 +48,6 @@ def mpda_insert_LS(ind):
         lsInd[(rdRobID * IND_TASKNUM): (rdRobID * IND_TASKNUM + IND_TASKNUM)] = perm
     return lsIndLst
 
-
-
 def mpda_v_insert_LS(ind):
     lsIndLst = []
     for lsID in range(LS_NUM):
@@ -78,7 +76,6 @@ def singleInsert(perm):
         r_pos2 += 1
     perm.insert(r_pos2, element)
     return perm
-
 
 def permutationSinglePointSwap(perm):
     unit1,unit2 = random.sample(perm, 2)
@@ -113,3 +110,4 @@ def mpda_triangle_LS(ind):
         # print(ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)])
         ind[(robID * IND_TASKNUM): (robID * IND_TASKNUM + IND_TASKNUM)] =  perm
         return [ind]
+

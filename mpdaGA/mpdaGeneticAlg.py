@@ -12,7 +12,7 @@ from mpdaInstance import  MPDAInstance
 from mpdaDecodeMethod.mpdaDecode import MPDADecoder
 from mpdaDecodeMethod.mpdaDecoderActSeq import  ActionSeq
 
-from MPDA_decode.MPDA_decode_discrete import  MPDA_Decode_Discrete_RC,MPDA_Decode_Discrete_Base
+from MPDA_decode.MPDA_decode_discrete import  MPDA_Decode_Discrete_RC,MPDA_Decode_Discrete_Base,MPDA_Decode_Discrete_NB
 
 from deap import base
 from deap import creator
@@ -40,6 +40,7 @@ class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
                  reStart = '_NORE',decodeMethod = '_NONE',
                  saveData = None, rdSeed = 1):
+        # raise Exception('xx')
 
         self._ins = ins
         self._robNum = ins._robNum
@@ -70,12 +71,12 @@ class MPDA_Genetic_Alg(object):
 
         self.rdSeed = rdSeed
         self.benchmarkName = benchmarkName
-        if decodeMethod == '_DTRI':
-            MPDA_Decode_Discrete_RC._ins = self._ins
-            MPDA_Decode_Discrete_Base._ins = self._ins
-            _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
-        else:
-            _eval.ga_eval_mpda = MPDADecoder(ins)
+        # if decodeMethod == '_DTRI':
+        #     MPDA_Decode_Discrete_NB._ins = self._ins
+        #     MPDA_Decode_Discrete_Base._ins = self._ins
+        #     _eval.ga_eval_mpda = MPDA_Decode_Discrete_NB()
+        # else:
+        #     _eval.ga_eval_mpda = MPDADecoder(ins)
         '''
         deap init
         '''
@@ -101,6 +102,12 @@ class MPDA_Genetic_Alg(object):
             MPDA_Decode_Discrete_Base._ins = self._ins
             _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
             self.toolbox.register("evaluate",_eval.mpda_eval_discrete_rc)
+            self._algName += decodeMethod
+        elif decodeMethod == '_NB':
+            MPDA_Decode_Discrete_NB._ins = self._ins
+            MPDA_Decode_Discrete_Base._ins = self._ins
+            _eval.ga_eval_mpda = MPDA_Decode_Discrete_NB()
+            self.toolbox.register("evaluate",_eval.mpda_eval_discrete_nb)
             self._algName += decodeMethod
         else:
             _eval.ga_eval_mpda = MPDADecoder(ins)
@@ -289,7 +296,6 @@ class MPDA_Genetic_Alg(object):
                             # try:
                             # print(minlInd.fitness.values[0])
                             if minlInd.fitness.values[0] <= ind.fitness.values[0]:
-
                                 pop[i] = minlInd
                                 # print(ind)
                                 # exit()

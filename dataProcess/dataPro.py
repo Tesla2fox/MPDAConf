@@ -42,8 +42,6 @@ def wRank(data1,data2):
 #         else:
 #             return False
 
-
-
 AbsolutePath = os.path.abspath(__file__)
 SuperiorCatalogue = os.path.dirname(AbsolutePath)
 WBaseDir = os.path.dirname(SuperiorCatalogue)
@@ -52,12 +50,13 @@ class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_ls_data//' + insName
         localSearchLst = ['_None', '_SWAP', '_INSERT','_VINSERT', '_TRI' ,'_TRISWAP']
-        reStartLst = ['_NORE']
+        reStartLst = ['_NORE','_ELRE']
         self.insName = insName
         self.fitDic = dict()
         self.genDic = dict()
         self.NFEDic = dict()
         self.HOFDic = dict()
+        self.HOFNFEDic = dict()
         # root, exsit_dirs, files = \
         # print(os.walk(BaseDir))
         # print(list(os.walk(BaseDir)))
@@ -86,6 +85,7 @@ class DataPro(object):
                     fitLstLst = []
                     NFELstLst = []
                     self.HOFDic[localSearch + reStart] = []
+                    self.HOFNFEDic[localSearch + reStart] = []
                     # [[] for _ in range(len(files))]
                     print('file Num = ', len(files))
 
@@ -93,7 +93,10 @@ class DataPro(object):
                             # exit()
                         if len(self.HOFDic[localSearch + reStart]) == 30:
                             break
-                        # print(i)
+                        if len(self.HOFNFEDic[localSearch + reStart]) == 30:
+                            break
+
+                            # print(i)
                         # if i >= 30:
                         #     break
                         genLst = []
@@ -111,6 +114,8 @@ class DataPro(object):
                                         genLst.append(int(lineData[1]))
                                         fitLst.append(float(lineData[5]))
                                         NFELst.append(float(lineData[2]))
+                                        if NFELst[-1] > 1.5E5:
+                                            self.HOFNFEDic[localSearch + reStart].append(fitLst[-1])
                         # print(file,' ', len(genLst))
                         fitLstLst.append(fitLst)
                         genLstLst.append(genLst)
@@ -191,19 +196,19 @@ class DataPro(object):
             _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(fitLstLst)):
-                # for ind, unit in enumerate(fitLstLst[3]):
-                for ind, unit in enumerate(fitLstLst[rt]):
+                for ind, unit in enumerate(fitLstLst[3]):
+                # for ind, unit in enumerate(fitLstLst[rt]):
                     _fitLstLst[ind].append(unit)
-                # break
+                break
 
             NFELstLst = self.NFEDic[key]
             _NFELstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(NFELstLst)):
-                # for ind, unit in enumerate(NFELstLst[3]):
-                for ind, unit in enumerate(NFELstLst[rt]):
+                for ind, unit in enumerate(NFELstLst[3]):
+                # for ind, unit in enumerate(NFELstLst[rt]):
                     _NFELstLst[ind].append(unit)
-                # break
+                break
             _minLst = []
             _meanLst = []
             # _genLst = []
@@ -244,6 +249,7 @@ class DataPro(object):
     def drawBox(self):
         figData = []
         for key in self.HOFDic:
+        # for key in self.HOFNFEDic:
             figData.append(go.Box(y=self.HOFDic[key],name = key))
         layout = dict()
         fig = go.Figure(data=figData, layout=layout)
@@ -254,7 +260,8 @@ class DataPro(object):
 
         # rankDicData = dict()
         rankLstData = []
-        for key in self.HOFDic:
+        # for key in self.HOFDic:
+        for key in self.HOFNFEDic:
             if len(self.HOFDic[key]) == 30:
                 # rankDicData[]
                 rankLstData.append((key,self.HOFDic[key]))
@@ -282,17 +289,17 @@ if __name__ == '__main__':
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
-        # d_pro.drawBox()
+        d_pro.drawBox()
         # break
         rankLst = d_pro.rankSum()
         for key,order in rankLst:
             if key not in rankDic:
                 rankDic[key] = []
             rankDic[key].append(order)
-
         # break
-        # d_pro.drawNFE()
         # break
+        d_pro.drawNFE()
+        break
 
     for key in rankDic:
         print(key,'   ',rankDic[key])
