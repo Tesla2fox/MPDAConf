@@ -27,6 +27,9 @@ import mpdaGA.mpdaGAInit as _init
 
 from MPDA_decode.MPDA_decode_discrete import  MPDA_Decode_Discrete_RC,MPDA_Decode_Discrete_Base,MPDA_Decode_Discrete_NB
 
+import warnings
+warnings.filterwarnings("ignore")
+
 from deap import base
 from deap import creator
 from deap import tools
@@ -50,12 +53,10 @@ from deap import benchmarks
 from deap import creator
 from deap import tools
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
-creator.create("Individual", list, typecode='i', fitness=creator.FitnessMin, actionSeq=object)
 
 
 class MPDA_EDA(object):
-    def __init__(self, ins: MPDAInstance):
+    def __init__(self, ins: MPDAInstance,benchmarkName, rdSeed = 1):
         self._ins = ins
         self._robNum = ins._robNum
         self._taskNum = ins._taskNum
@@ -68,8 +69,11 @@ class MPDA_EDA(object):
         self._rob2taskDisMat = ins._rob2taskDisMat
         self._taskDisMat = ins._taskDisMat
 
+        self.rdSeed = rdSeed
+        self.benchmarkName = benchmarkName
+
         self._algName = 'eda_opt_'
-        self._algName = 'ga_opt_'
+        # self._algName = 'ga_opt_'
 
 
         _eval.IND_ROBNUM = self._robNum
@@ -92,6 +96,9 @@ class MPDA_EDA(object):
         self.toolbox.register("evaluate", _eval.mpda_eval_discrete_rc)
 
         self.toolbox.register("selection", self.selection)
+
+        random.seed(rdSeed)
+        np.random.seed(rdSeed)
         # self._algName += decodeMethod
 
         # self.maxIter = int(1e4)
@@ -158,22 +165,28 @@ class MPDA_EDA(object):
                     x_lst = np.array(x_lst)
                     y_lst = np.array(y_lst)
                     mean = sum(x_lst * y_lst) / sum(y_lst)
+
                     sigma = np.sqrt(sum(y_lst * (x_lst - mean) ** 2) / sum(y_lst))
+                    if sigma == 0:
+                        sigma = 0.0001
+                    # print(mean, sigma)
                     try:
-                        popt, pcov = curve_fit(Gauss, x_lst, y_lst, p0=[max(y_lst), mean, sigma], maxfev=3500)
+                        popt, pcov = curve_fit(Gauss, x_lst, y_lst, p0=[max(y_lst), mean, sigma], maxfev = 3000)
+                        # exit()
                     except:
                         popt = [max(y_lst), mean, sigma]
+                    # exit()
                     ratio = sum(y_lst) / modelSize
                     poptLst.append((ratio, popt))
                 robModel.append(tuple(poptLst))
             self.modelLst.append(robModel)
-
-    def sample(self):
-
-        while len(self.c_pop) < self.NP:
-            sampleMat = np.zeros((self.robNum, self.taskNum))
-            for robInd in range(self.robNum):
-                for taskPos in range(self.taskNum):
+        # exit()
+    def sample(self,s_lst,NP):
+        c_pop = s_lst
+        while len(c_pop) < NP:
+            sampleMat = np.zeros((self._robNum, self._taskNum))
+            for robInd in range(self._robNum):
+                for taskPos in range(self._taskNum):
                     robModel = self.modelLst[robInd][taskPos]
                     popt = []
                     if random.random() < robModel[0][0]:
@@ -183,24 +196,42 @@ class MPDA_EDA(object):
                     x = random.normalvariate(popt[1], popt[2])
                     sampleMat[robInd][taskPos] = x
             #        sampleMat 2 the encode mat
-            encodeMat = np.zeros((self.robNum, self.taskNum), dtype=int)
-            for robInd in range(self.robNum):
+            # encodeMat = np.zeros((self._robNum, self._taskNum), dtype=int)
+            lstRes = []
+            for robInd in range(self._robNum):
                 enumPerm = list(enumerate(sampleMat[robInd][:]))
                 #             print()
                 enumPerm = sorted(enumPerm, key=lambda x: x[1])
                 #                 print(enumPerm)
-                encodeMat[robInd][:] = [x[0] for x in enumPerm]
+                # encodeMat[robInd][:]\
+                lstRes.extend([x[0] for x in enumPerm])
+            ind = self.toolbox.individual()
+            ind[:] = lstRes[:]
+            s_lst.append(ind)
+            # print(ind)
+            # for i in range(self._robNum):
+            #     ind[]
+            # print(encodeMat)
+            # exit()
             #            print(encodeMat)
-            self.c_pop.append(encodeMat)
+            # self.c_pop.append(encodeMat)
                 # for pos in range(len(robEncode)):
                 #     taskID = robEncode[pos]
                 #     sMat[pos][taskID] += 1
         # if s_pop
+        return s_lst
     def run(self):
+
+        randomSeed = self.rdSeed
+
+        f_con = open(BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
+        save_data = BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat'
+        print(save_data)
 
         NP = 300
         modelSize = 300 * 0.3
-        ngen = int(1e4)
+        ngen = int(1.42e4)
+        ngen = 10
         hof = tools.HallOfFame(1)
         stats = tools.Statistics(lambda ind: ind.fitness.values)
         stats.register("avg", numpy.mean)
@@ -209,8 +240,11 @@ class MPDA_EDA(object):
         stats.register("max", numpy.max)
         logbook = tools.Logbook()
         logbook.header = "gen", "min", "std", "avg", "max"
+        hof = tools.HallOfFame(1)
+
         # logbook = tools.Logbook()
         # logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
+        start = time.time()
 
         pop = self.toolbox.population(n = NP)
         NFE = 0
@@ -220,12 +254,41 @@ class MPDA_EDA(object):
             ms,act_seq = fit
             ind.fitness.values = (ms,)
             ind.actionSeq = act_seq
-        print('xxx')
+        # print('xxx')
         for gen in range(ngen):
-
             s_lst = self.toolbox.selection(pop,modelSize = modelSize)
             self.statistic(s_lst)
             self.model(modelSize = modelSize)
+            pop = self.sample(s_lst, NP)
+            for i in range(math.floor(modelSize),NP):
+                ms,act_seq = self.toolbox.evaluate(pop[i])
+                pop[i].fitness.values = (ms,)
+                pop[i].actionSeq = act_seq
+            record = stats.compile(pop)
+            logbook.record(gen=gen , **record)
+            print(logbook.stream)
+            hof.update(pop)
+            self.writeDir(f_con,record,gen,NFE = math.ceil(gen* NP *(1-0.3)))
+
+        end = time.time()
+        runTime = end - start
+        print('runTime', runTime)
+        f_con.write(str(hof[0]) + '\n')
+        f_con.write('min  ' + str(hof[0].fitness.values[0]) + '\n')
+        f_con.write('NFE ' + str(NFE) + '\n')
+        # f_con.write('LSNFE ' + str(LSNFE) + '\n')
+        # f_con.write('VLSNFE ' + str(VLSNFE) + '\n')
+        f_con.write('runTime ' + str(runTime) + '\n')
+        f_con.close()
+
+    def writeDir(self, f_con, RecordDic, gen, NFE):
+        f_con.write('gen ' + str(gen) + ' ')
+        f_con.write(str(NFE) + ' ')
+        f_con.write(str(RecordDic['avg']) + ' ')
+        f_con.write(str(RecordDic['std']) + ' ')
+        f_con.write(str(RecordDic['min']) + ' ')
+        f_con.write(str(RecordDic['max']) + ' \n')
+        f_con.flush()
 
             # Generate a new population
             # population = self.toolbox.generate()
