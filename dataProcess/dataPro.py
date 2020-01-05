@@ -28,19 +28,6 @@ def wRank(data1,data2):
         # print('no equal')
         return np.mean(data2) - np.mean(data1)
 
-#
-#
-#     alpha = 0.05
-#     if p > alpha:
-#     	print('Same distribution (fail to reject H0)')
-#         raise Exception('xxx')
-#         return  0
-#     else:
-#         print('Different distribution (reject H0)')
-#         if np.mean(data1)< np.mean(data2):
-#             return True
-#         else:
-#             return False
 
 AbsolutePath = os.path.abspath(__file__)
 SuperiorCatalogue = os.path.dirname(AbsolutePath)
@@ -48,8 +35,9 @@ WBaseDir = os.path.dirname(SuperiorCatalogue)
 
 class DataPro(object):
     def __init__(self,insName):
-        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_ls_data//' + insName
-        localSearchLst = ['_None', '_SWAP', '_INSERT','_VINSERT', '_TRI' ,'_TRISWAP']
+        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_cec_data//' + insName
+        # localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
+        localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI' ]
         reStartLst = ['_NORE','_ELRE']
         self.insName = insName
         self.fitDic = dict()
@@ -57,7 +45,7 @@ class DataPro(object):
         self.NFEDic = dict()
         self.HOFDic = dict()
         self.HOFNFEDic = dict()
-        # root, exsit_dirs, files = \
+        # root, exsit_dirs, files =
         # print(os.walk(BaseDir))
         # print(list(os.walk(BaseDir)))
         # # print(exsit_dirs)
@@ -260,8 +248,8 @@ class DataPro(object):
 
         # rankDicData = dict()
         rankLstData = []
-        # for key in self.HOFDic:
-        for key in self.HOFNFEDic:
+        for key in self.HOFDic:
+        # for key in self.HOFNFEDic:
             if len(self.HOFDic[key]) == 30:
                 # rankDicData[]
                 rankLstData.append((key,self.HOFDic[key]))
@@ -284,12 +272,18 @@ if __name__ == '__main__':
                   '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
                   '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
                   '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
-                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins']
+                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
+                  '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
+                  '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
+                  '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
+                  '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+                  '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins'
+                  ]
     rankDic = dict()
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
-        d_pro.drawBox()
+        # d_pro.drawBox()
         # break
         rankLst = d_pro.rankSum()
         for key,order in rankLst:
@@ -298,8 +292,8 @@ if __name__ == '__main__':
             rankDic[key].append(order)
         # break
         # break
-        d_pro.drawNFE()
-        break
+        # d_pro.drawNFE()
+        # break
 
     for key in rankDic:
         print(key,'   ',rankDic[key])
