@@ -294,7 +294,6 @@ if __name__ == '__main__':
         # break
         # d_pro.drawNFE()
         # break
-
     for key in rankDic:
         print(key,'   ',rankDic[key])
    # d_pro.rankSum()
