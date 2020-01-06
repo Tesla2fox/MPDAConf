@@ -212,6 +212,8 @@ class MPDA_Genetic_Alg(object):
             raise Exception('there is no restart method')
             pass
         self.CXPB = CXPB
+        if self.CXPB == 1.0:
+            self.CXPB = int(self.CXPB)
         self._algName += str(self.CXPB)
         # self._algName += self.__class__
     def run(self):

@@ -37,14 +37,23 @@ class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_cec_data//' + insName
         # localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI' ]
-        reStartLst = ['_NORE','_ELRE']
+        localSearchLst = ['_None', '_SWAP', '_MSWAP' ]
+        # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
+        reStartLst = ['_NORE0.5','_NORE0.75','_NORE1']
         self.insName = insName
         self.fitDic = dict()
         self.genDic = dict()
         self.NFEDic = dict()
         self.HOFDic = dict()
         self.HOFNFEDic = dict()
+
+        cmpLst = []
+
+        for localSearch in localSearchLst:
+            for reStart in reStartLst:
+                dir = 'ga_opt_' + localSearch + reStart
+                cmpLst.append(dir)
+        cmpLst.append('eda_opt_')
         # root, exsit_dirs, files =
         # print(os.walk(BaseDir))
         # print(list(os.walk(BaseDir)))
@@ -56,75 +65,72 @@ class DataPro(object):
         for root, exsit_dirs, files in os.walk(BaseDir):
             # figData = []
             # print('xxxxx')
-            for localSearch in localSearchLst:
-                for reStart in reStartLst:
-                    dir = 'ga_opt_' + localSearch + reStart
+            for dir in cmpLst:
                     # print(dir)
-                    if dir not in exsit_dirs:
-                        print(dir,' is not exsit')
-                        continue
-                    dataDir = BaseDir + '//ga_opt_' + localSearch + reStart
-                    # print(dataDir)
-                    print(dataDir)
-                    for root, dirs, files in os.walk(dataDir):
-                        print(files)
-                    genLstLst = []
-                    #    [[] for _ in range(len(files))]
-                    fitLstLst = []
-                    NFELstLst = []
-                    self.HOFDic[localSearch + reStart] = []
-                    self.HOFNFEDic[localSearch + reStart] = []
-                    # [[] for _ in range(len(files))]
-                    print('file Num = ', len(files))
+                if dir not in exsit_dirs:
+                    print(dir,' is not exsit')
+                    continue
+                dataDir = BaseDir + '//' + dir
+                # print(dataDir)
+                print(dataDir)
+                for root, dirs, files in os.walk(dataDir):
+                    print(files)
+                genLstLst = []
+                #    [[] for _ in range(len(files))]
+                fitLstLst = []
+                NFELstLst = []
+                self.HOFDic[dir] = []
+                self.HOFNFEDic[dir] = []
+                # [[] for _ in range(len(files))]
+                print('file Num = ', len(files))
 
-                    for i,file in enumerate(files):
-                            # exit()
-                        if len(self.HOFDic[localSearch + reStart]) == 30:
-                            break
-                        if len(self.HOFNFEDic[localSearch + reStart]) == 30:
-                            break
-
-                            # print(i)
-                        # if i >= 30:
-                        #     break
-                        genLst = []
-                        fitLst = []
-                        NFELst = []
-                        with open(dataDir + '//' + file) as txtData:
-                            lines = txtData.readlines()
-                            for line in lines:
-                                lineData = line.split()
-                                if (len(lineData) == 0):
-                                    continue
-                                if (len(lineData) == 7):
-                                    # print(lineData)
-                                    if lineData[0] == 'gen':
-                                        genLst.append(int(lineData[1]))
-                                        fitLst.append(float(lineData[5]))
-                                        NFELst.append(float(lineData[2]))
-                                        if NFELst[-1] > 1.5E5:
-                                            self.HOFNFEDic[localSearch + reStart].append(fitLst[-1])
-                        # print(file,' ', len(genLst))
-                        fitLstLst.append(fitLst)
-                        genLstLst.append(genLst)
-                        NFELstLst.append(NFELst)
-                        # print(len())
-                        rdData = r_d.Read_Cfg(dataDir + '//' + file)
-                        try:
-                            self.HOFDic[localSearch + reStart].append(rdData.getSingleVal('min'))
-                        except Exception as e:
-                            print(dataDir +'//' + file)
-                            print(e)
-                            pass
-                    if self.HOFDic[localSearch+ reStart] == 30:
+                for i,file in enumerate(files):
+                        # exit()
+                    if len(self.HOFDic[dir]) == 30:
+                        break
+                    if len(self.HOFNFEDic[dir]) == 30:
+                        break
+                    # print(i)
+                    # if i >= 30:
+                    #     break
+                    genLst = []
+                    fitLst = []
+                    NFELst = []
+                    with open(dataDir + '//' + file) as txtData:
+                        lines = txtData.readlines()
+                        for line in lines:
+                            lineData = line.split()
+                            if (len(lineData) == 0):
+                                continue
+                            if (len(lineData) == 7):
+                                # print(lineData)
+                                if lineData[0] == 'gen':
+                                    genLst.append(int(lineData[1]))
+                                    fitLst.append(float(lineData[5]))
+                                    NFELst.append(float(lineData[2]))
+                                    if NFELst[-1] > 1.5E5:
+                                        self.HOFNFEDic[dir].append(fitLst[-1])
+                    # print(file,' ', len(genLst))
+                    fitLstLst.append(fitLst)
+                    genLstLst.append(genLst)
+                    NFELstLst.append(NFELst)
+                    # print(len())
+                    rdData = r_d.Read_Cfg(dataDir + '//' + file)
+                    try:
+                        self.HOFDic[dir].append(rdData.getSingleVal('min'))
+                    except Exception as e:
+                        print(dataDir +'//' + file)
+                        print(e)
                         pass
-                    # elif
-                        # print(genLst)
-                        # print(fitLst)
-                    self.fitDic[localSearch + reStart] = fitLstLst
-                    self.genDic[localSearch+ reStart] = genLstLst
-                    self.NFEDic[localSearch+ reStart] = NFELstLst
-                    # print(self.fitDic)
+                if self.HOFDic[dir] == 30:
+                    pass
+                # elif
+                    # print(genLst)
+                    # print(fitLst)
+                self.fitDic[localSearch + reStart] = fitLstLst
+                self.genDic[localSearch+ reStart] = genLstLst
+                self.NFEDic[localSearch+ reStart] = NFELstLst
+                # print(self.fitDic)
             break
             # print(self.fitDic)
     def drawGen(self):
@@ -283,7 +289,7 @@ if __name__ == '__main__':
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
-        # d_pro.drawBox()
+        d_pro.drawBox()
         # break
         rankLst = d_pro.rankSum()
         for key,order in rankLst:
@@ -293,7 +299,7 @@ if __name__ == '__main__':
         # break
         # break
         # d_pro.drawNFE()
-        # break
+        break
     for key in rankDic:
         print(key,'   ',rankDic[key])
    # d_pro.rankSum()
