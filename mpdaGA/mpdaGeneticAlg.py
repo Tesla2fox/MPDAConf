@@ -22,6 +22,7 @@ import random
 import time
 
 import os
+from operator import attrgetter
 
 AbsolutePath = os.path.abspath(__file__)
 SuperiorCatalogue = os.path.dirname(AbsolutePath)
@@ -39,7 +40,7 @@ class DecoderType(Enum):
 class MPDA_Genetic_Alg(object):
     def __init__(self,ins : MPDAInstance,benchmarkName,localSearch = None,
                  reStart = '_NORE',decodeMethod = '_NONE',
-                 saveData = None, rdSeed = 1):
+                 saveData = None, rdSeed = 1,CXPB = 0.5):
         # raise Exception('xx')
 
         self._ins = ins
@@ -126,25 +127,43 @@ class MPDA_Genetic_Alg(object):
         # is replaced by the 'fittest' (best) of three individuals
         # drawn randomly from the current generation.
         # tools.selAutomaticEpsilonLexicase(), tournsize=3
-        self.toolbox.register("select", _select.selRoulette)
-        self.toolbox.register("select",tools.selTournament, tournsize = 3)
+        # self.toolbox.register("select", _select.selRoulette)
+        # self.toolbox.register("select",tools.selTournament, tournsize = 3)
+        self.toolbox.register("select",tools.selBest)
             # ()
             #                   tools.selTournament,tournsize = 3)
 
+        self._mutationBool = False
         if localSearch == '_None':
             self._localSearchBoolean = False
             self._algName += localSearch
+            self._mutationBool = True
         elif localSearch == '_SWAP':
             self._localSearchBoolean = True
             self.toolbox.register("localSearch",_local.mpda_swap_LS)
             self._algName += localSearch
-            self._LSP = 0.7
+            self._LSP = 0.2
             _local.TOOLBOX = self.toolbox
+            self._OneStepBool = True
+        elif localSearch == '_MSWAP':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_insert_LS)
+            self._algName += localSearch
+            self._LSP = 0.2
+            _local.TOOLBOX = self.toolbox
+            self._OneStepBool = False
+        elif localSearch == '_MTRI':
+            self._localSearchBoolean = True
+            self.toolbox.register("localSearch",_local.mpda_triangle_LS)
+            self._algName += localSearch
+            # self._LSP = 0.2
+            _local.TOOLBOX = self.toolbox
+            self._OneStepBool = False
         elif localSearch == '_TRI':
             self._localSearchBoolean = True
             self.toolbox.register("localSearch",_local.mpda_triangle_LS)
             self._algName += localSearch
-            self._LSP = 1
+            self._LSP = 0.2
             _local.TOOLBOX = self.toolbox
         elif localSearch == '_INSERT':
             self._localSearchBoolean = True
@@ -173,12 +192,10 @@ class MPDA_Genetic_Alg(object):
         else:
             raise  Exception('there is no local method')
             pass
-
         _restart.TOOLBOX = self.toolbox
         if reStart == '_NORE':
             self._reStartBoolean = False
             self._algName += reStart
-
         elif reStart == '_REGEN':
             self._reStartBoolean = True
             self._algName += reStart
@@ -194,7 +211,9 @@ class MPDA_Genetic_Alg(object):
         else:
             raise Exception('there is no restart method')
             pass
-
+        self.CXPB = CXPB
+        self._algName += str(self.CXPB)
+        # self._algName += self.__class__
     def run(self):
 
         randomSeed = self.rdSeed
@@ -204,10 +223,14 @@ class MPDA_Genetic_Alg(object):
         save_data = BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat'
         print(save_data)
 
-        NP = 300
-        NGEN = int(30E4)
-        CXPB, MUTPB = 0.5, 0.3
+        NP = self._robNum * self._taskNum
+        MAXNFE = self._robNum * self._taskNum * 500
 
+        NGEN = int(1E4)
+        CXPB, MUTPB = self.CXPB, 0.1
+        print('NP  =',NP)
+        print('MAXNFE = ',MAXNFE)
+        print('CXPB = ', self.CXPB)
         start = time.time()
 
         pop = self.toolbox.population(n = NP)
@@ -240,24 +263,41 @@ class MPDA_Genetic_Alg(object):
         VLSNFELST = [VLSNFE]
         for g in range(1, NGEN + 1):
             offspring = []
-            for _ in range(100):
+            # for ind in pop:
+            for _ in range(len(pop) * 3):
                 op_choice = random.random()
-                if op_choice < CXPB:  # Apply crossover
+                if op_choice< CXPB:
+                    # ind1 = self.toolbox.clone(pop[i])
+                    # random.randint(0,len(pop)-2)
                     ind1, ind2 = map(self.toolbox.clone, random.sample(pop, 2))
                     ind1, ind2 = self.toolbox.mate(ind1, ind2)
                     del ind1.fitness.values
                     del ind1.actionSeq
-                    offspring.append(ind1)
-                elif op_choice < CXPB + MUTPB:  # Apply mutation
-                    ind = self.toolbox.clone(random.choice(pop))
-                    ind, = self.toolbox.mutate(ind)
-                    del ind.fitness.values
-                    del ind.actionSeq
-                    offspring.append(ind)
-                else:  # Apply reproduction
-                    pass
-                    # offspring.append(random.choice(pop))
-            # Evaluate the individuals with an invalid fitness
+                    del ind2.fitness.values
+                    del ind2.actionSeq
+                    if ind1 not in offspring:
+                        offspring.append(ind1)
+                    else:
+                        pass
+                        # raise Exception('XXX')
+                    if ind2 not in offspring:
+                        # pass
+                        offspring.append(ind2)
+                    else:
+                        pass
+                        # raise Exception('xxxxs')
+            # print(len(offspring))
+            if self._mutationBool:
+                for _ in range(len(pop) *3):
+                    op_choice = random.random()
+                    if op_choice < MUTPB:
+                        ind = self.toolbox.clone(random.choice(pop))
+                        ind, = self.toolbox.mutate(ind)
+                        if ind not in offspring:
+                            del ind.fitness.values
+                            del ind.actionSeq
+                            offspring.append(ind)
+            # print(len(offspring))
             invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
             fitnesses = map(self.toolbox.evaluate, invalid_ind)
             NFE += len(invalid_ind)
@@ -265,6 +305,64 @@ class MPDA_Genetic_Alg(object):
                 ms, act_seq = fit
                 ind.fitness.values = (ms,)
                 ind.actionSeq = act_seq
+            if self._localSearchBoolean:
+                if self._OneStepBool:
+                    for i,ind in enumerate(offspring):
+                        # bf = ind.fitness.values[0]
+                        if random.random() < self._LSP:
+                            # lInd = self.toolbox.clone(ind)
+                            # print(ind)
+                            lIndLst = self.toolbox.localSearch(ind)
+                            if len(lIndLst) > 0:
+                                for lInd in lIndLst:
+                                    del lInd.fitness.values
+                                    del lInd.actionSeq
+                                    ms,act_seq = self.toolbox.evaluate(lInd)
+                                    lInd.fitness.values = (ms,)
+                                    lInd.actionSeq = act_seq
+                                minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                                # try:
+                                # print(minlInd.fitness.values[0])
+                                if minlInd.fitness.values[0] <= ind.fitness.values[0]:
+                                    offspring[i] = minlInd
+                                    # print(ind)
+                                    # exit()
+                                    # print(len(lIndLst))
+                                    VLSNFE += len(lIndLst)
+                                    # print(VLSNFE)
+                                NFE += len(lIndLst)
+                                LSNFE += len(lIndLst)
+                else:
+                        # bf = ind.fitness.values[0]
+                    s_inds = sorted(offspring, key=attrgetter('fitness'), reverse=True)
+                    ind = s_inds[0]
+                    ind_ID = offspring.index(ind)
+                    if random.random() < self._LSP:
+                        # lInd = self.toolbox.clone(ind)
+                        # print(ind)
+                        while True:
+                            lIndLst = self.toolbox.localSearch(ind)
+                            if len(lIndLst) > 0:
+                                for lInd in lIndLst:
+                                    del lInd.fitness.values
+                                    del lInd.actionSeq
+                                    ms,act_seq = self.toolbox.evaluate(lInd)
+                                    lInd.fitness.values = (ms,)
+                                    lInd.actionSeq = act_seq
+                                minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                                # try:
+                                # print(minlInd.fitness.values[0])
+                                if minlInd.fitness.values[0] < ind.fitness.values[0]:
+                                    offspring[ind_ID] = minlInd
+                                    # print(ind)
+                                    # exit()
+                                    # print(len(lIndLst))
+                                    VLSNFE += len(lIndLst)
+                                else:
+                                    break
+                                NFE += len(lIndLst)
+                                LSNFE += len(lIndLst)
+                # elif
             # print("  Evaluated %i individuals" % len(invalid_ind))
             # Select the next generation population
             pop[:] = self.toolbox.select(pop + offspring, NP)
@@ -278,32 +376,6 @@ class MPDA_Genetic_Alg(object):
             '''
             local search
             '''
-            if self._localSearchBoolean:
-                for i,ind in enumerate(pop):
-                    # bf = ind.fitness.values[0]
-                    if random.random() < self._LSP:
-                        # lInd = self.toolbox.clone(ind)
-                        # print(ind)
-                        lIndLst = self.toolbox.localSearch(ind)
-                        if len(lIndLst) > 0:
-                            for lInd in lIndLst:
-                                del lInd.fitness.values
-                                del lInd.actionSeq
-                                ms,act_seq = self.toolbox.evaluate(lInd)
-                                lInd.fitness.values = (ms,)
-                                lInd.actionSeq = act_seq
-                            minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
-                            # try:
-                            # print(minlInd.fitness.values[0])
-                            if minlInd.fitness.values[0] <= ind.fitness.values[0]:
-                                pop[i] = minlInd
-                                # print(ind)
-                                # exit()
-                                # print(len(lIndLst))
-                                VLSNFE += len(lIndLst)
-                                # print(VLSNFE)
-                            NFE += len(lIndLst)
-                            LSNFE += len(lIndLst)
             record = stats.compile(pop)
             logbook.record(gen=g, **record)
             print(logbook.stream)
@@ -312,7 +384,7 @@ class MPDA_Genetic_Alg(object):
             # print(logbook.select('gen'))
             # print(logbook.select('min'))
             # exit()
-            if NFE > 30E4:
+            if NFE > MAXNFE:
                 break
             if self._reStartBoolean:
                 # print(record)
@@ -325,14 +397,17 @@ class MPDA_Genetic_Alg(object):
                 if(len(set(minLst[-11:]))==1):
                     print('restart   ==== ')
                     _nfe,pop = self.toolbox.reStart(pop)
-                    print('xxx')
+                    # print(pop[0])
+                    # print('xxx')
                     fitnesses = map(self.toolbox.evaluate, pop)
                     NFE += _nfe
                     for ind, fit in zip(pop, fitnesses):
                         ms, act_seq = fit
                         ind.fitness.values = (ms,)
                         ind.actionSeq = act_seq
+                    # exit()
                     rg = g
+                    self._reStartBoolean = False
                 else:
                     pass
         print('hof = ', hof)

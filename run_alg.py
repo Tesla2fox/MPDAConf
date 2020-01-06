@@ -23,25 +23,30 @@ if __name__ == '__main__':
     print(sys.argv)
     print(len(sys.argv))
     
-    if len(sys.argv)  == 5:
+    if len(sys.argv)  == 6:
         benchmarkName = sys.argv[1]
         randomSeed = int(sys.argv[2])
         localSearch = sys.argv[3]
         reStart = sys.argv[4]
+        CXPB = float(sys.argv[5])
         decodeMethod = '_NONE'
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
-        benchmarkName = '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins'
-        randomSeed = 1
-        localSearch = '_None'
+        # benchmarkName = '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins'
+        randomSeed = 2
+        # localSearch = '_None'
         # localSearch = '_TRI'
         localSearch = '_SWAP'
+        localSearch  = '_MSWAP'
+        localSearch = '_None'
         # reStart = '_REGEN'
         reStart = '_ELRE'
+        reStart = '_NORE'
         #reStart = '_PREGEN'
         # decodeMethod = '_DTRI'
         # decodeMethod = '_NB'
         decodeMethod = '_NONE'
+        CXPB = 0.5
         # reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
@@ -49,7 +54,7 @@ if __name__ == '__main__':
     # else:
     #
     #     raise Exception('xxx')
-    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_VINSERT','_DIST','_TRISWAP']
+    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_MSWAP','_VINSERT','_DIST','_TRISWAP']
     reStartLst = ['_NORE','_REGEN','_PREGEN', '_ELRE']
     if localSearch not in localSearchLst:
         print(localSearch)
@@ -63,6 +68,6 @@ if __name__ == '__main__':
     mpda_ga = MPDA_Genetic_Alg(ins, benchmarkName = benchmarkName ,
                                localSearch = localSearch,
                                reStart = reStart, decodeMethod = decodeMethod,
-                               rdSeed = randomSeed)
+                               rdSeed = randomSeed,CXPB = CXPB)
     print(mpda_ga)
     mpda_ga.run()

@@ -32,14 +32,18 @@ def mpda_eliteRegenerate(pop):
     s_inds = sorted(pop, key=attrgetter('fitness'), reverse=True)
     np = len(pop)
     NFE = np
-    # rPop = []
-    for i in range(np):
-        if random.random() < 0.9:
-            pop[i] = TOOLBOX.individual()
+    rPop = [TOOLBOX.clone(s_inds[0])]
+    # print(s_inds[0])
+    i = 0
+    while len(rPop) < np:
+        if random.random() <0.95:
+            rPop.append(TOOLBOX.individual())
             NFE += 1
         else:
             ind, = _mutate.mpda_mutate(pop[i], 0.1)
-            pop[i] = ind
-    return NFE,pop
+            rPop.append(ind)
+            NFE += 1
+        i = i + 1
+    return NFE,rPop
 
 
