@@ -33,13 +33,14 @@ if __name__ == '__main__':
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         # benchmarkName = '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins'
-        randomSeed = 2
+        randomSeed = 39
         # localSearch = '_None'
         # localSearch = '_TRI'
         localSearch = '_SWAP'
-        localSearch  = '_MSWAP'
-        localSearch = '_None'
-        localSearch = '_MNSWAP'
+        localSearch = '_MSWAP'
+        # localSearch  = '_MSWAP'
+        # localSearch = '_None'
+        # localSearch = '_MNSWAP'
         # reStart = '_REGEN'
         reStart = '_ELRE'
         reStart = '_NORE'
@@ -47,7 +48,7 @@ if __name__ == '__main__':
         # decodeMethod = '_DTRI'
         # decodeMethod = '_NB'
         decodeMethod = '_NONE'
-        CXPB = 1
+        CXPB = 2
         # reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
