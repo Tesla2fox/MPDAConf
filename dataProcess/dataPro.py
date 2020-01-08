@@ -37,7 +37,7 @@ class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_exp_data//' + insName
         # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None', '_MSWAP','_MOSWAP','_SWAP',]
+        localSearchLst = ['_None', '_MSWAP','_MOSWAP','_MNSWAP','_SWAP',]
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
         reStartLst = ['_NORE0.5','_NORE0.75','_NORE1']
         # reStartLst = ['_NORE0.5']
