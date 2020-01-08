@@ -35,11 +35,14 @@ WBaseDir = os.path.dirname(SuperiorCatalogue)
 
 class DataPro(object):
     def __init__(self,insName):
-        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_cec_data//' + insName
-        # localSearchLst = ['_None', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None', '_SWAP', '_MSWAP' ]
+        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_exp_data//' + insName
+        # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
+        localSearchLst = ['_None', '_MSWAP','_MOSWAP','_SWAP',]
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
         reStartLst = ['_NORE0.5','_NORE0.75','_NORE1']
+        # reStartLst = ['_NORE0.5']
+        # ,'_NORE0.75','_NORE1']
+
         self.insName = insName
         self.fitDic = dict()
         self.genDic = dict()
@@ -83,9 +86,9 @@ class DataPro(object):
                 self.HOFNFEDic[dir] = []
                 # [[] for _ in range(len(files))]
                 print('file Num = ', len(files))
-
                 for i,file in enumerate(files):
                         # exit()
+                    # print(i)
                     if len(self.HOFDic[dir]) == 30:
                         break
                     if len(self.HOFNFEDic[dir]) == 30:
@@ -108,8 +111,9 @@ class DataPro(object):
                                     genLst.append(int(lineData[1]))
                                     fitLst.append(float(lineData[5]))
                                     NFELst.append(float(lineData[2]))
-                                    if NFELst[-1] > 1.5E5:
-                                        self.HOFNFEDic[dir].append(fitLst[-1])
+                                    # if NFELst[-1] > 1.5E5:
+                                    #     self.HOFNFEDic[dir].append(fitLst[-1])
+                                        # break
                     # print(file,' ', len(genLst))
                     fitLstLst.append(fitLst)
                     genLstLst.append(genLst)
@@ -118,6 +122,7 @@ class DataPro(object):
                     rdData = r_d.Read_Cfg(dataDir + '//' + file)
                     try:
                         self.HOFDic[dir].append(rdData.getSingleVal('min'))
+                        # print(self.HOFDic[dir])
                     except Exception as e:
                         print(dataDir +'//' + file)
                         print(e)
@@ -127,9 +132,9 @@ class DataPro(object):
                 # elif
                     # print(genLst)
                     # print(fitLst)
-                self.fitDic[localSearch + reStart] = fitLstLst
-                self.genDic[localSearch+ reStart] = genLstLst
-                self.NFEDic[localSearch+ reStart] = NFELstLst
+                self.fitDic[dir] = fitLstLst
+                self.genDic[dir] = genLstLst
+                self.NFEDic[dir] = NFELstLst
                 # print(self.fitDic)
             break
             # print(self.fitDic)
@@ -179,8 +184,8 @@ class DataPro(object):
         mean_figData = []
         min_figData = []
         for key in self.fitDic:
-            if len(self.HOFDic[key]) != 30:
-                continue
+            # if len(self.HOFDic[key]) != 30:
+            #     continue
             fitLstLst = self.fitDic[key]
             # print(key)
             # for xx in fitLstLst:
@@ -190,17 +195,17 @@ class DataPro(object):
             _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(fitLstLst)):
-                for ind, unit in enumerate(fitLstLst[3]):
-                # for ind, unit in enumerate(fitLstLst[rt]):
+                # for ind, unit in enumerate(fitLstLst[3]):
+                for ind, unit in enumerate(fitLstLst[rt]):
                     _fitLstLst[ind].append(unit)
-                break
+                # break
 
             NFELstLst = self.NFEDic[key]
             _NFELstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(NFELstLst)):
-                for ind, unit in enumerate(NFELstLst[3]):
-                # for ind, unit in enumerate(NFELstLst[rt]):
+                # for ind, unit in enumerate(NFELstLst[3]):
+                for ind, unit in enumerate(NFELstLst[rt]):
                     _NFELstLst[ind].append(unit)
                 break
             _minLst = []
@@ -208,6 +213,8 @@ class DataPro(object):
             # _genLst = []
             _nfeLst = []
             for gen, _data in enumerate(_fitLstLst):
+                if gen <= 10:
+                    continue
                 if len(_data) == 0 :
                     break
                 _meanLst.append(np.mean(_data))
@@ -236,7 +243,7 @@ class DataPro(object):
         layout['yaxis'] = dict(title='makespan (s)')
         fig = go.Figure(data=min_figData, layout=layout)
         # fig.show()
-        plotly.offline.plot(fig, filename= WBaseDir + '//fig//nfe_min_'+ self.insName + '.png')
+        # plotly.offline.plot(fig, filename= WBaseDir + '//fig//nfe_min_'+ self.insName + '.png')
         # fig.write_image(WBaseDir + '//fig//min_'+ self.insName + '.png')
         # exit()
 
@@ -256,34 +263,42 @@ class DataPro(object):
         rankLstData = []
         for key in self.HOFDic:
         # for key in self.HOFNFEDic:
-            if len(self.HOFDic[key]) == 30:
+            if len(self.HOFDic[key]) >= 10:
                 # rankDicData[]
                 rankLstData.append((key,self.HOFDic[key]))
+                print(key,len(self.HOFDic[key]))
+            else:
+                print(key,len(self.HOFDic[key]))
+                # print(key,self.HOFDic[key])
         print(rankLstData)
         # rankLstData = sorted(rankLstData, key = cmp_to_key(sWRank))
         # for key,data in rankLstData:
         #     print(key)
         rankLstData = sorted(rankLstData, key = lambda x : np.mean(x[1]) )
+        # rankLstData = sorted(rankLstData, key = lambda x : np.min(x[1]) )
         # print(rankLstData)
         rankLst = []
         i = 1
         for key,data in rankLstData:
+            # print(key,' ',np.mean(data))
             print(key,' ',np.mean(data))
             rankLst.append((key,i))
             i += 1
         return rankLst
 
 if __name__ == '__main__':
-    insNameLst = ['8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
+    insNameLst = [
+        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+        '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
+        '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
+                '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
                   '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
                   '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
                   '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
                   '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
-                  '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
-                  '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
-                  '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
-                  '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
-                  '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins'
+                  # '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
+                  # '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
+                  # '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
                   ]
     rankDic = dict()
     for insName in insNameLst:
@@ -296,10 +311,12 @@ if __name__ == '__main__':
             if key not in rankDic:
                 rankDic[key] = []
             rankDic[key].append(order)
+        # for key in rankDic:
+        #     print(key, '   ', rankDic[key])
         # break
         # break
         # d_pro.drawNFE()
-        break
+        # break
     for key in rankDic:
         print(key,'   ',rankDic[key])
    # d_pro.rankSum()

@@ -39,6 +39,7 @@ if __name__ == '__main__':
         localSearch = '_SWAP'
         localSearch  = '_MSWAP'
         localSearch = '_None'
+        localSearch = '_MNSWAP'
         # reStart = '_REGEN'
         reStart = '_ELRE'
         reStart = '_NORE'
@@ -46,7 +47,7 @@ if __name__ == '__main__':
         # decodeMethod = '_DTRI'
         # decodeMethod = '_NB'
         decodeMethod = '_NONE'
-        CXPB = 0.5
+        CXPB = 1
         # reStart = '_NORE'
     else :
         raise Exception('something wrong on the sys.argv')
@@ -54,7 +55,8 @@ if __name__ == '__main__':
     # else:
     #
     #     raise Exception('xxx')
-    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_MSWAP','_VINSERT','_DIST','_TRISWAP']
+    localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_MSWAP','_MNSWAP',
+                      '_MOSWAP','_VINSERT','_DIST','_TRISWAP']
     reStartLst = ['_NORE','_REGEN','_PREGEN', '_ELRE']
     if localSearch not in localSearchLst:
         print(localSearch)
