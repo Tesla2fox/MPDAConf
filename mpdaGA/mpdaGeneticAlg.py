@@ -241,7 +241,7 @@ class MPDA_Genetic_Alg(object):
         print(save_data)
 
         NP = self._robNum * self._taskNum
-        MAXNFE = self._robNum * self._taskNum * 500
+        MAXNFE = self._robNum * self._taskNum * 700
 
         NGEN = int(1E4)
         CXPB, MUTPB = self.CXPB, 0.1

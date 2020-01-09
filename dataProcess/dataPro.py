@@ -33,13 +33,17 @@ AbsolutePath = os.path.abspath(__file__)
 SuperiorCatalogue = os.path.dirname(AbsolutePath)
 WBaseDir = os.path.dirname(SuperiorCatalogue)
 
+figBaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//fig//'
+
+
+
 class DataPro(object):
     def __init__(self,insName):
-        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_exp_data//' + insName
+        BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//' + insName
         # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None', '_MSWAP','_MOSWAP','_MNSWAP','_SWAP',]
+        localSearchLst = ['_None' ,'_SWAP',]
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
-        reStartLst = ['_NORE0.5','_NORE0.75','_NORE1']
+        reStartLst = ['_NORE1','_NORE2','_NORE3']
         # reStartLst = ['_NORE0.5']
         # ,'_NORE0.75','_NORE1']
 
@@ -56,7 +60,7 @@ class DataPro(object):
             for reStart in reStartLst:
                 dir = 'ga_opt_' + localSearch + reStart
                 cmpLst.append(dir)
-        cmpLst.append('eda_opt_')
+        # cmpLst.append('eda_opt_')
         # root, exsit_dirs, files =
         # print(os.walk(BaseDir))
         # print(list(os.walk(BaseDir)))
@@ -143,8 +147,18 @@ class DataPro(object):
         min_figData = []
         for key in self.fitDic:
             fitLstLst = self.fitDic[key]
-            _fitLstLst = [[] for _ in range(len(fitLstLst[0]))]
+            if len(fitLstLst) == 0:
+                continue
+            print(fitLstLst)
+            # print(key)
+            # for xx in fitLstLst:
+            #     print(len(xx))
+            max_gen = len(max(fitLstLst,key = lambda  x: len(x)))
+            print('max_gen', max_gen)
+
+            _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
+
             for rt in range(len(fitLstLst)):
                 for ind, unit in enumerate(fitLstLst[rt]):
                     _fitLstLst[ind].append(unit)
@@ -168,7 +182,7 @@ class DataPro(object):
         # fig.show()
         # plotly.offline.plot(fig, image = 'png',
         #                     image_filename = WBaseDir + '//fig//mean_'+ self.insName )
-        plotly.offline.plot(fig, filename= WBaseDir + '//fig//mean_'+ self.insName + '.png')
+        plotly.offline.plot(fig, filename= figBaseDir + 'mean_'+ self.insName )
         # fig.write_image(WBaseDir + '//fig//mean_'+ self.insName )
         layout = dict()
         layout['title'] = 'min'
@@ -176,7 +190,7 @@ class DataPro(object):
         layout['yaxis'] = dict(title='makespan (s)')
         fig = go.Figure(data=min_figData, layout=layout)
         # fig.show()
-        plotly.offline.plot(fig, filename= WBaseDir + '//fig//min_'+ self.insName + '.png')
+        # plotly.offline.plot(fig, filename= WBaseDir + '//fig//min_'+ self.insName + '.png')
         # fig.write_image(WBaseDir + '//fig//min_'+ self.insName + '.png')
         # exit()
 
@@ -187,9 +201,13 @@ class DataPro(object):
             # if len(self.HOFDic[key]) != 30:
             #     continue
             fitLstLst = self.fitDic[key]
+            if len(fitLstLst) == 0:
+                continue
+            print(fitLstLst)
             # print(key)
-            # for xx in fitLstLst:
-            #     print(len(xx))
+            for xx in fitLstLst:
+                print(len(xx))
+            # exit()
             max_gen = len(max(fitLstLst,key = lambda  x: len(x)))
             print('max_gen', max_gen)
             _fitLstLst = [[] for _ in range(max_gen)]
@@ -213,11 +231,23 @@ class DataPro(object):
             # _genLst = []
             _nfeLst = []
             for gen, _data in enumerate(_fitLstLst):
-                if gen <= 10:
-                    continue
+                # if gen <= 2:
+                #     continue
                 if len(_data) == 0 :
                     break
-                _meanLst.append(np.mean(_data))
+                mean_data  = np.mean(_data)
+
+                if mean_data >20000:
+                    _meanLst.append(2000)
+                else:
+                    _meanLst.append(mean_data)
+
+                # print(len((_data)))
+                # print(np.mean(_data))
+                if len(_meanLst) > 2:
+                    if _meanLst[-1] > _meanLst[-2]:
+                        print('xxx')
+                        # exit()exit
                 _nfeLst.append(np.mean(_NFELstLst[gen]))
                 # _genLst.append(gen)
                 # _nfeLst.append()
@@ -235,7 +265,8 @@ class DataPro(object):
         # fig.show()
         # plotly.offline.plot(fig, image = 'png',
         #                     image_filename = WBaseDir + '//fig//mean_'+ self.insName )
-        plotly.offline.plot(fig, filename= WBaseDir + '//fig//nfe_mean_'+ self.insName + '.png')
+        plotly.offline.plot(fig, filename= figBaseDir +'nfe_mean_'+ self.insName )
+        # exit()
         # fig.write_image(WBaseDir + '//fig//mean_'+ self.insName )
         layout = dict()
         layout['title'] = 'min'
@@ -255,10 +286,9 @@ class DataPro(object):
         layout = dict()
         fig = go.Figure(data=figData, layout=layout)
         # fig.show()
-        plotly.offline.plot(fig, filename=WBaseDir + '//fig//_' + self.insName + '_box')
+        plotly.offline.plot(fig, filename=figBaseDir +'_' + self.insName + '_box')
 
     def rankSum(self):
-
         # rankDicData = dict()
         rankLstData = []
         for key in self.HOFDic:
@@ -288,14 +318,14 @@ class DataPro(object):
 
 if __name__ == '__main__':
     insNameLst = [
-        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
-        '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
+        # '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+        # '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
         '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
                 '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
-                  '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
-                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
-                  '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
-                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
+                  # '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
+                  # '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
+                  # '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
+                  # '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
                   # '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
                   # '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
                   # '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
@@ -304,13 +334,16 @@ if __name__ == '__main__':
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
-        d_pro.drawBox()
+        # d_pro.drawBox()
         # break
         rankLst = d_pro.rankSum()
         for key,order in rankLst:
             if key not in rankDic:
                 rankDic[key] = []
             rankDic[key].append(order)
+        d_pro.drawNFE()
+        d_pro.drawGen()
+        # break
         # for key in rankDic:
         #     print(key, '   ', rankDic[key])
         # break
