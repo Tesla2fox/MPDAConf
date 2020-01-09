@@ -1,4 +1,10 @@
 #!/bin/sh
+
+
+
+
+
+#!/bin/sh
 #
 # Force Bourne Shell if not Sun Grid Engine default shell (you never know!)
 #
@@ -14,21 +20,7 @@
 # directory that should have been created for us
 #
 # Check we have somewhere to work now and if we don't, exit nicely.
-#
-if [ -d /local/tmp/guanqiang/$JOB_ID ]; then
-        cd /local/tmp/guanqiang/$JOB_ID
-else
-        echo "Uh oh ! There's no job directory to change into "
-        echo "Something is broken. I should inform the programmers"
-        echo "Save some information that may be of use to them"
-        echo "Here's LOCAL TMP "
-        ls -la /local/tmp
-        echo "AND LOCAL TMP guanqiang "
-        ls -la /local/tmp/guanqiang
-        echo "Exiting"
-        exit 1
-fi
-#
+##
 # Now we are in the job-specific directory so now can do something useful
 #
 # Stdout from programs and shell echos will go into the file
@@ -68,21 +60,29 @@ echo ==t==
 #
 
 # echo  dir ===$(pwd)====
+# pwd
+# cp  -r /vol/grid-solar/sgeusers/guanqiang/MPDAConf .
+# echo ==WHATS THERE HAVING COPIED STUFF OVER AS INPUT==
+# ls -a 
+# cd MPDAConf
+
+
 pwd
-cp  -r /vol/grid-solar/sgeusers/guanqiang/runCode .
-echo ==WHATS THERE HAVING COPIED STUFF OVER AS INPUT==
-ls -a 
-cd runCode
+cd ..
+cd MPDAConf
+echo 'instance ==========' $1
+echo 'method ======== ' ga_opt_$2
 
 echo 'instance ==========' $1
 echo 'method ======== ' ga_opt_$2
+
 
 
 DATA_PATH=/vol/grid-solar/sgeusers/guanqiang/mpda_new_data/
 # for reStart in  _REGEN
 for reStart in  _NORE
 do
-for cxpb in 1 2 3 
+for cxpb in  1 2 3
 do
 if [ -d ./debugData/$1/ga_opt_$2${reStart}${cxpb} ]; then
     echo 'there is a dir for saving data'
@@ -101,9 +101,9 @@ for rdSeed in $(seq 1 2 60)
 do
    echo "rdSeed =  $rdSeed "
 #    python3  -W ingore run_alg.py   $1 $rdSeed $2
-   python3  run_alg.py  $1 $rdSeed $2 ${reStart} ${cxpb}
+    python3  run_alg.py  $1 $rdSeed $2 ${reStart} ${cxpb}
+    cp  ./debugData/$1/ga_opt_$2$reStart${cxpb}/r_${rdSeed}.dat ${DATA_PATH}/$1/ga_opt_$2$reStart${cxpb}/
 done
-cp  ./debugData/$1/ga_opt_$2$reStart${cxpb}/*.dat ${DATA_PATH}/$1/ga_opt_$2$reStart${cxpb}/
 done
 done 
 

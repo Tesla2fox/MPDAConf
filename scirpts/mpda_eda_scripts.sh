@@ -37,75 +37,41 @@ fi
 #
 echo ==Leon MPDA Conf==
 echo ==t==
-# uname -n
-# echo ==Leon Gao==
-# id
-# groups
-# echo ==SGE_O_WORKDIR==
-# echo $SGE_O_WORKDIR
-# echo ==/LOCAL/TMP==
-# ls -ltr /local/tmp/
-# echo ==/VOL/GRID-SOLAR==
-# ls -l /vol/grid-solar/sgeusers/
-# 
-# OK, where are we starting from and what's the environment we're in
-# 
-# echo ==RUN HOME==
-# pwd
-# ls
-# echo ==ENV==
-# env
-# echo ==SET==
-# set
-# 
-# echo == WHATS IN LOCAL/TMP ON THE MACHINE WE ARE RUNNING ON ==
-# ls -ltra /local/tmp | tail
-# 
-# echo == WHATS IN LOCAL TMP guanqiang JOB_ID AT THE START==
-# ls -la 
-#
-# Copy the input file to the local directory
-#
-
-# echo  dir ===$(pwd)====
 pwd
-cp  -r /vol/grid-solar/sgeusers/guanqiang/runCode .
+cp  -r /vol/grid-solar/sgeusers/guanqiang/MPDAConf .
 echo ==WHATS THERE HAVING COPIED STUFF OVER AS INPUT==
 ls -a 
-cd runCode
+cd MPDAConf
 
 echo 'instance ==========' $1
-echo 'method ======== ' ga_opt_$2
+# echo 'method ======== ' ga_opt_$2
 
 
-DATA_PATH=/vol/grid-solar/sgeusers/guanqiang/mpda_new_data/
-# for reStart in  _REGEN
-for reStart in  _NORE
-do
-for cxpb in 1 2 3 
-do
-if [ -d ./debugData/$1/ga_opt_$2${reStart}${cxpb} ]; then
+
+if [-d ./debugData/$1/eda_opt_]; then
     echo 'there is a dir for saving data'
 else
-    mkdir -p ./debugData/$1/ga_opt_$2${reStart}${cxpb} 
-    echo 'create ./debugData/'$1'/ga_opt_'$2${reStart}${cxpb}
+    mkdir -p ./debugData/$1/eda_opt_ 
+    echo 'create ./debugData/'$1'/ga_opt_'
 fi
 
-if [ -d ${DATA_PATH}/$1/ga_opt_$2${reStart}${cxpb} ]; then
+DATA_PATH=/vol/grid-solar/sgeusers/guanqiang/mpda_cec_data/
+
+if [ -d ${DATA_PATH}/$1/eda_opt_ ]; then
     echo 'there is a dir for saving data'
 else
-    mkdir -p ${DATA_PATH}/$1/ga_opt_$2${reStart}${cxpb} 
+    mkdir -p ${DATA_PATH}/$1/eda_opt_
 fi
 
 for rdSeed in $(seq 1 2 60)
 do
    echo "rdSeed =  $rdSeed "
 #    python3  -W ingore run_alg.py   $1 $rdSeed $2
-   python3  run_alg.py  $1 $rdSeed $2 ${reStart} ${cxpb}
-done
-cp  ./debugData/$1/ga_opt_$2$reStart${cxpb}/*.dat ${DATA_PATH}/$1/ga_opt_$2$reStart${cxpb}/
+   python3  run_eda.py  $1 $rdSeed 
+    cp  ./debugData/$1/eda_opt_/*.dat ${DATA_PATH}/$1/eda_opt_/
 done
 done 
+# for reStart in  _REGEN
 
 
 # for rdSeed in $(seq 1 2 60)
