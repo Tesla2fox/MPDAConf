@@ -37,7 +37,7 @@ if __name__ == '__main__':
         # localSearch = '_None'
         # localSearch = '_TRI'
         localSearch = '_SWAP'
-        localSearch = '_MSWAP'
+        # localSearch = '_MSWAP'
         # localSearch  = '_MSWAP'
         # localSearch = '_None'
         # localSearch = '_MNSWAP'

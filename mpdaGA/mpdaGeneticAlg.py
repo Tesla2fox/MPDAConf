@@ -281,7 +281,7 @@ class MPDA_Genetic_Alg(object):
         for g in range(1, NGEN + 1):
             offspring = []
             # for ind in pop:
-            for _ in range(len(pop) * 3 * self.CXPB):
+            for _ in range(len(pop) * self.CXPB):
                 # op_choice = random.random()
                 # if op_choice< CXPB:
                     # ind1 = self.toolbox.clone(pop[i])
@@ -296,7 +296,7 @@ class MPDA_Genetic_Alg(object):
                 offspring.append(ind2)
 
             if self._mutationBool:
-                for _ in range(len(pop) *3):
+                for _ in range(len(pop) * self.CXPB):
                     op_choice = random.random()
                     if op_choice < MUTPB:
                         ind = self.toolbox.clone(random.choice(pop))
@@ -364,22 +364,22 @@ class MPDA_Genetic_Alg(object):
                                     if lInd.fitness.values[0] < ind.fitness.values[0]:
                                         VLSNFE += 1
                                 minlInd = min(lIndLst,key = lambda x: x.fitness.values[0])
+                                NFE += len(lIndLst)
+                                LSNFE += len(lIndLst)
                                 # try:
                                 # print(minlInd.fitness.values[0])
                                 if minlInd.fitness.values[0] < ind.fitness.values[0]:
-                                    print(ind,ind.fitness.values[0])
+                                    # print(ind,ind.fitness.values[0])
                                     ind = minlInd
-                                    print(ind,ind.fitness.values[0])
+                                    # print(ind,ind.fitness.values[0])
                                     # print(ind)
                                     # exit()
                                     # print(len(lIndLst))
                                     # VLSNFE += len(lIndLst)
                                 else:
                                     offspring[ind_ID] = ind
-                                    print(offspring[ind_ID],ind.fitness.values[0])
+                                    # print(offspring[ind_ID],ind.fitness.values[0])
                                     break
-                                NFE += len(lIndLst)
-                                LSNFE += len(lIndLst)
                 elif self._localSearchStr == '_MNSWAP':
                     for i,ind in enumerate(offspring):
                         # bf = ind.fitness.values[0]
@@ -465,6 +465,7 @@ class MPDA_Genetic_Alg(object):
         print('LSNFE = ', LSNFE)
         print('VLSNFE = ', VLSNFE)
         # print('complete =',hof[0].actionSeq._arrCmpltTaskLst)
+
         # f_con.write(hof)
         end = time.time()
         runTime = end - start

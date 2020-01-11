@@ -41,10 +41,10 @@ class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//' + insName
         # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None' ,'_SWAP',]
+        localSearchLst = ['_None' ,'_SWAP','_MSWAP']
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
-        reStartLst = ['_NORE1','_NORE2','_NORE3']
-        # reStartLst = ['_NORE0.5']
+        # reStartLst = ['_NORE1','_NORE2','_NORE3']
+        reStartLst = ['_NORE2']
         # ,'_NORE0.75','_NORE1']
 
         self.insName = insName
@@ -203,13 +203,13 @@ class DataPro(object):
             fitLstLst = self.fitDic[key]
             if len(fitLstLst) == 0:
                 continue
-            print(fitLstLst)
+            # print(fitLstLst)
             # print(key)
-            for xx in fitLstLst:
-                print(len(xx))
+            # for xx in fitLstLst:
+            #     print(len(xx))
             # exit()
             max_gen = len(max(fitLstLst,key = lambda  x: len(x)))
-            print('max_gen', max_gen)
+            # print('max_gen', max_gen)
             _fitLstLst = [[] for _ in range(max_gen)]
             # print(_fitLstLst)
             for rt in range(len(fitLstLst)):
@@ -318,14 +318,14 @@ class DataPro(object):
 
 if __name__ == '__main__':
     insNameLst = [
-        # '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
-        # '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
+        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+        '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
         '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
                 '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
-                  # '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
-                  # '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
-                  # '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
-                  # '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
+                  '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
+                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
+                  '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
+                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
                   # '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
                   # '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
                   # '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
@@ -342,7 +342,7 @@ if __name__ == '__main__':
                 rankDic[key] = []
             rankDic[key].append(order)
         d_pro.drawNFE()
-        d_pro.drawGen()
+        # d_pro.drawGen()
         # break
         # for key in rankDic:
         #     print(key, '   ', rankDic[key])
