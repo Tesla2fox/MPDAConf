@@ -9,6 +9,7 @@ from  functools import cmp_to_key
 import functools
 import readcfg as r_d
 
+import dataProcess.convertData as cd
 
 
 def sWRank(data1,data2):
@@ -34,17 +35,18 @@ SuperiorCatalogue = os.path.dirname(AbsolutePath)
 WBaseDir = os.path.dirname(SuperiorCatalogue)
 
 figBaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//fig//'
-
+figBaseDir = '/Users/leona/code/data/SOMEDATA//fig//'
 
 
 class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//' + insName
+        BaseDir = '/Users/leona/code/data/SOMEDATA//' + insName
         # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None' ,'_SWAP','_MSWAP']
+        localSearchLst = ['_None','_SWAP','_MSWAP']
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
-        # reStartLst = ['_NORE1','_NORE2','_NORE3']
-        reStartLst = ['_NORE2']
+        reStartLst = ['_NORE1','_NORE2','_NORE3']
+        # reStartLst = ['_NORE2']
         # ,'_NORE0.75','_NORE1']
 
         self.insName = insName
@@ -230,9 +232,13 @@ class DataPro(object):
             _meanLst = []
             # _genLst = []
             _nfeLst = []
+            min_gen = len(min(fitLstLst,key = lambda  x: len(x)))
+
             for gen, _data in enumerate(_fitLstLst):
                 # if gen <= 2:
                 #     continue
+                if gen > min_gen:
+                    break
                 if len(_data) == 0 :
                     break
                 mean_data  = np.mean(_data)
@@ -252,7 +258,27 @@ class DataPro(object):
                 # _genLst.append(gen)
                 # _nfeLst.append()
                 _minLst.append(min(_data))
-            mean_trace = go.Scatter(mode='lines', x=_nfeLst, y=_meanLst, name=key)
+
+            if key == 'ga_opt__SWAP_NORE2':
+                name = 'MA-OLS-2'
+            elif key == 'ga_opt__SWAP_NORE1':
+                name = 'MA-OLS-1'
+            elif key == 'ga_opt__SWAP_NORE3':
+                name = 'MA-OLS-3'
+            elif key == 'ga_opt__MSWAP_NORE2':
+                name = 'MA-MLS-2'
+            elif key == 'ga_opt__MSWAP_NORE1':
+                name = 'MA-MLS-1'
+            elif key == 'ga_opt__MSWAP_NORE3':
+                name = 'MA-MLS-3'
+            # elif key == 'ga_opt__MSWAP_NORE2':
+            #     name = 'MA-MLS'
+            # elif key == 'ga_opt__None_NORE2':
+            #     name = 'GA'
+            else:
+                name = key
+
+            mean_trace = go.Scatter(mode='lines', x=_nfeLst, y=_meanLst, name=name)
             mean_figData.append(mean_trace)
             min_trace = go.Scatter(mode='lines', x=_nfeLst, y=_minLst, name=key)
             min_figData.append(min_trace)
@@ -260,14 +286,26 @@ class DataPro(object):
         layout = dict()
         layout['xaxis'] = dict(title='NFE')
         layout['yaxis'] = dict(title='makespan (s)')
-        layout['title'] = 'mean'
+        # layout['title'] = 'mean'
         fig = go.Figure(data=mean_figData, layout=layout)
+        fig.update_layout(
+            legend=go.layout.Legend(
+                x=0.8,
+                y=1),
+        margin = go.layout.Margin(
+            # l=50,
+            r=0,
+            b=10,
+            t=0,
+            pad=0
+        )
+        )
         # fig.show()
         # plotly.offline.plot(fig, image = 'png',
         #                     image_filename = WBaseDir + '//fig//mean_'+ self.insName )
-        plotly.offline.plot(fig, filename= figBaseDir +'nfe_mean_'+ self.insName )
+        # plotly.offline.plot(fig, filename= figBaseDir +'nfe_mean_'+ self.insName )
         # exit()
-        # fig.write_image(WBaseDir + '//fig//mean_'+ self.insName )
+        fig.write_image(figBaseDir + 'mean_'+ self.insName +'.pdf' )
         layout = dict()
         layout['title'] = 'min'
         layout['xaxis'] = dict(title='NFE')
@@ -312,20 +350,22 @@ class DataPro(object):
         for key,data in rankLstData:
             # print(key,' ',np.mean(data))
             print(key,' ',np.mean(data))
+            print(key, 'min &',cd.Etype2str(np.min(data)))
+            print(key, 'avg &',cd.Etype2str(np.mean(data)))
             rankLst.append((key,i))
             i += 1
         return rankLst
 
 if __name__ == '__main__':
     insNameLst = [
-        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
         '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
+        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+        '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
         '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
-                '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
                   '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
                   '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
                   '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
-                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
+                  # '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
                   # '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
                   # '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
                   # '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
@@ -341,7 +381,7 @@ if __name__ == '__main__':
             if key not in rankDic:
                 rankDic[key] = []
             rankDic[key].append(order)
-        d_pro.drawNFE()
+        # d_pro.drawNFE()
         # d_pro.drawGen()
         # break
         # for key in rankDic:

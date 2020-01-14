@@ -95,6 +95,10 @@ class MPDA_EDA(object):
         _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
         self.toolbox.register("evaluate", _eval.mpda_eval_discrete_rc)
 
+        # _eval.ga_eval_mpda = MPDADecoder(ins)
+        # self.toolbox.register("evaluate", _eval.mpda_eval)
+
+        # self.toolbox.register("evaluate",_eval.mpda_eval)
         self.toolbox.register("selection", self.selection)
 
         random.seed(rdSeed)
@@ -231,7 +235,7 @@ class MPDA_EDA(object):
         NP = 300
         modelSize = 300 * 0.3
         ngen = int(1.42e4)
-        ngen = 10
+        # ngen = 10
         hof = tools.HallOfFame(1)
         stats = tools.Statistics(lambda ind: ind.fitness.values)
         stats.register("avg", numpy.mean)
@@ -268,7 +272,10 @@ class MPDA_EDA(object):
             logbook.record(gen=gen , **record)
             print(logbook.stream)
             hof.update(pop)
-            self.writeDir(f_con,record,gen,NFE = math.ceil(gen* NP *(1-0.3)))
+            NFE += math.ceil(NP * 0.7)
+            if NFE > self._robNum * self._taskNum *700:
+                break
+            self.writeDir(f_con,record,gen,NFE = NFE)
 
         end = time.time()
         runTime = end - start

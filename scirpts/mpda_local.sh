@@ -69,16 +69,14 @@ echo ==t==
 
 pwd
 cd ..
-cd MPDAConf
+#cd MPDAConf
 echo 'instance ==========' $1
 echo 'method ======== ' ga_opt_$2
 
 echo 'instance ==========' $1
 echo 'method ======== ' ga_opt_$2
 
-
-
-DATA_PATH=/vol/grid-solar/sgeusers/guanqiang/mpda_new_data/
+DATA_PATH=/Users/leona/code/pycode/data/
 # for reStart in  _REGEN
 for reStart in  _NORE
 do

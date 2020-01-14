@@ -17,6 +17,7 @@ def mpda_eval(individual):
             i += 1
     # mpda_decode_nb = MPDA_Decode_Discrete_NB()
     # print(encode)
+    # print(ga_eval_mpda.decode(encode))
     validBoolean,actSeq = ga_eval_mpda.decode(encode)
     if not validBoolean:
         ms = 9999999999999999
