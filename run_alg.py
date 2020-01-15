@@ -27,13 +27,15 @@ if __name__ == '__main__':
         benchmarkName = sys.argv[1]
         randomSeed = int(sys.argv[2])
         localSearch = sys.argv[3]
-        reStart = sys.argv[4]
+        # reStart = sys.argv[4]
+        decodeMethod = sys.argv[4]
+        reStart = '_NORE'
         CXPB = float(sys.argv[5])
-        decodeMethod = '_NONE'
+        # decodeMethod = '_NONE'
     elif len(sys.argv) == 1:
         benchmarkName = '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins'
         # benchmarkName = '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins'
-        randomSeed = 39
+        randomSeed = 57
         # localSearch = '_None'
         # localSearch = '_TRI'
         localSearch = '_SWAP'
@@ -47,7 +49,8 @@ if __name__ == '__main__':
         #reStart = '_PREGEN'
         # decodeMethod = '_DTRI'
         # decodeMethod = '_NB'
-        decodeMethod = '_NONE'
+        # decodeMethod = '_NONE'
+        decodeMethod = '_DTRI'
         CXPB = 2
         # reStart = '_NORE'
     else :
@@ -58,7 +61,7 @@ if __name__ == '__main__':
     #     raise Exception('xxx')
     localSearchLst = ['_None','_SWAP','_INSERT','_TRI','_MSWAP','_MNSWAP',
                       '_MOSWAP','_VINSERT','_DIST','_TRISWAP']
-    reStartLst = ['_NORE','_REGEN','_PREGEN', '_ELRE']
+    reStartLst = ['_NORE','_REGEN','_PREGEN', '_ELRE','_RC']
     if localSearch not in localSearchLst:
         print(localSearch)
         raise  Exception('not in the localSearchLst')

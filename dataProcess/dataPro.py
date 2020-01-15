@@ -13,7 +13,7 @@ import dataProcess.convertData as cd
 
 
 def sWRank(data1,data2):
-    # print(data1[0], data2[0])
+    print(data1[0], data2[0])
     return wRank(data1[1],data2[1])
 
 def wRank(data1,data2):
@@ -21,8 +21,9 @@ def wRank(data1,data2):
     alpha = 0.05
     # print('Statistics=%.3f, p=%.3f' % (stat, p))
     if p > alpha:
-        # print(p)
-        # print('equal ')
+        print(p)
+        print('equal ')
+        # print(data,data2)
         # raise Exception('xxxx')
         return 0
     else:
@@ -35,17 +36,18 @@ SuperiorCatalogue = os.path.dirname(AbsolutePath)
 WBaseDir = os.path.dirname(SuperiorCatalogue)
 
 figBaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//fig//'
-figBaseDir = '/Users/leona/code/data/SOMEDATA//fig//'
+# figBaseDir = '/Users/leona/code/data/SOMEDATA//fig//'
 
 
 class DataPro(object):
     def __init__(self,insName):
         BaseDir = '/vol//grid-solar//sgeusers//guanqiang//mpda_new_data//' + insName
-        BaseDir = '/Users/leona/code/data/SOMEDATA//' + insName
+        # BaseDir = '/Users/leona/code/data/SOMEDATA//' + insName
         # localSearchLst = ['_None', '_SWAP', '_SWAP', '_INSERT', '_TRI' ,'_TRISWAP']
-        localSearchLst = ['_None','_SWAP','_MSWAP']
+        # localSearchLst = ['_None','_SWAP','_MSWAP']
+        localSearchLst = ['_SWAP','_MSWAP']
         # reStartLst = ['_NORE0.5','_NORE0.75','_NORE1','_ELRE']
-        reStartLst = ['_NORE1','_NORE2','_NORE3']
+        reStartLst = ['_NORE2','_DTRI2']
         # reStartLst = ['_NORE2']
         # ,'_NORE0.75','_NORE1']
 
@@ -305,7 +307,8 @@ class DataPro(object):
         #                     image_filename = WBaseDir + '//fig//mean_'+ self.insName )
         # plotly.offline.plot(fig, filename= figBaseDir +'nfe_mean_'+ self.insName )
         # exit()
-        fig.write_image(figBaseDir + 'mean_'+ self.insName +'.pdf' )
+        fig.show()
+        # fig.write_image(figBaseDir + 'mean_'+ self.insName +'.pdf' )
         layout = dict()
         layout['title'] = 'min'
         layout['xaxis'] = dict(title='NFE')
@@ -339,10 +342,13 @@ class DataPro(object):
                 print(key,len(self.HOFDic[key]))
                 # print(key,self.HOFDic[key])
         print(rankLstData)
-        # rankLstData = sorted(rankLstData, key = cmp_to_key(sWRank))
+        try:
+            rankLstData = sorted(rankLstData, key = cmp_to_key(sWRank))
+        except:
+            rankLstData = sorted(rankLstData, key = lambda x : np.mean(x[1]) )
+
         # for key,data in rankLstData:
         #     print(key)
-        rankLstData = sorted(rankLstData, key = lambda x : np.mean(x[1]) )
         # rankLstData = sorted(rankLstData, key = lambda x : np.min(x[1]) )
         # print(rankLstData)
         rankLst = []
@@ -358,24 +364,27 @@ class DataPro(object):
 
 if __name__ == '__main__':
     insNameLst = [
-        '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
-        '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
+        # '5_4_RANDOMCLUSTERED_RANDOMCLUSTERED_SVLCV_SVSCV_thre0.1MPDAins',
+        # '5_5_ECCENTRIC_RANDOM_SVSCV_LVSCV_thre0.1MPDAins',
         '8_8_ECCENTRIC_RANDOM_UNITARY_QUADRANT_thre0.1MPDAins',
-        '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
-                  '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
-                  '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
-                  '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
-                  # '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
+        # '8_8_CLUSTERED_CLUSTERED_SVLCV_UNITARY_thre0.1MPDAins',
+        #           '11_11_RANDOMCLUSTERED_CLUSTERED_MSVFLV_QUADRANT_thre0.1MPDAins',
+        #           '17_23_RANDOMCLUSTERED_CLUSTERED_LVLCV_LVSCV_thre0.1MPDAins',
+        #           '20_20_CLUSTERED_RANDOM_QUADRANT_LVSCV_thre0.1MPDAins',
+                  '20_18_RANDOM_ECCENTRIC_QUADRANT_SVLCV_thre0.1MPDAins',
                   # '32_32_ECCENTRIC_RANDOM_QUADRANT_QUADRANT_thre0.1MPDAins',
                   # '29_36_ECCENTRIC_CLUSTERED_SVSCV_LVSCV_thre0.1MPDAins',
                   # '26_29_CLUSTERED_RANDOM_SVSCV_SVSCV_thre0.1MPDAins',
                   ]
     rankDic = dict()
+
     for insName in insNameLst:
         print('insName = ',insName)
         d_pro  = DataPro(insName)
         # d_pro.drawBox()
         # break
+        if len(d_pro.HOFDic) == 4:
+            print('success ',insName)
         rankLst = d_pro.rankSum()
         for key,order in rankLst:
             if key not in rankDic:

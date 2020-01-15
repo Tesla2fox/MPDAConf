@@ -103,13 +103,13 @@ class MPDA_Genetic_Alg(object):
             MPDA_Decode_Discrete_Base._ins = self._ins
             _eval.ga_eval_mpda = MPDA_Decode_Discrete_RC()
             self.toolbox.register("evaluate",_eval.mpda_eval_discrete_rc)
-            self._algName += decodeMethod
+            # self._algName += decodeMethod
         elif decodeMethod == '_NB':
             MPDA_Decode_Discrete_NB._ins = self._ins
             MPDA_Decode_Discrete_Base._ins = self._ins
             _eval.ga_eval_mpda = MPDA_Decode_Discrete_NB()
             self.toolbox.register("evaluate",_eval.mpda_eval_discrete_nb)
-            self._algName += decodeMethod
+            # self._algName += decodeMethod
         else:
             _eval.ga_eval_mpda = MPDADecoder(ins)
             self.toolbox.register("evaluate",_eval.mpda_eval)
@@ -208,9 +208,16 @@ class MPDA_Genetic_Alg(object):
             raise  Exception('there is no local method')
             pass
         _restart.TOOLBOX = self.toolbox
+
+        self._algName += decodeMethod
+
         if reStart == '_NORE':
             self._reStartBoolean = False
-            self._algName += reStart
+            # self._algName += reStart
+        elif reStart =='_RC':
+            self._reStartBoolean = False
+            self._algName  += reStart
+
         elif reStart == '_REGEN':
             self._reStartBoolean = True
             self._algName += reStart
@@ -235,7 +242,7 @@ class MPDA_Genetic_Alg(object):
 
         randomSeed = self.rdSeed
         random.seed(randomSeed)
-
+        print(self._algName)
         f_con = open(BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat','w')
         save_data = BaseDir + '//debugData//'+str(self.benchmarkName)+ '//'+ str(self._algName) +'//'+ 'r_' + str(randomSeed) + '.dat'
         print(save_data)
